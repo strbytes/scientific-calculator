@@ -29,7 +29,10 @@ const operators = {
   add: (x, y) => x + y,
   sub: (x, y) => x - y,
   mul: (x, y) => x * y,
-  div: (x, y) => x / y,
+  div: (x, y) => {
+    if (y === 0) return "ERR";
+    return x / y;
+  },
   pct: (x) => x * 0.01,
 };
 
@@ -49,7 +52,7 @@ function clearButtonPress(event) {
     screen.textContent = "0";
   } else {
     // Clear all
-    // TODO clear variables once they are added
+    currOperation = null;
     screen.textContent = "0";
   }
 }
@@ -116,12 +119,15 @@ function equals(_) {
     }
     currOperation.y = y;
     let results = currOperation.operate(currOperation.x, currOperation.y);
-    if (Math.floor(results / 10 ** 7) > 1) {
-      // represent large numbers using e notation
-      results = results.toExponential(2);
-    } else if (results.toString().length > 8) {
-      // truncate long decimals
-      results = results.toString().substring(0, 8);
+    if (results !== "ERR") {
+      // Skip tests if results are an error
+      if (Math.floor(results / 10 ** 7) > 1) {
+        // represent large numbers using e notation
+        results = results.toExponential(2);
+      } else if (results.toString().length > 8) {
+        // truncate long decimals
+        results = results.toString().substring(0, 8);
+      }
     }
     screen.textContent = results.toString();
     // reset current operation and screen
