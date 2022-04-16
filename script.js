@@ -56,10 +56,13 @@ function clearButtonPress(event) {
 
 function numButtonPress(event) {
   num = event.target.id;
-  // Reset screen when entering next number
   if (newNum) {
+    // Reset screen when entering next number
     screen.textContent = num;
     newNum = false;
+  } else if (screen.textContent.length === 8) {
+    // if entered number would exceed the length of the screen, do nothing
+    return;
   } else if (screen.textContent === "0") {
     // If screen is 0, reset it with next entered number
     // But only if the number is not 0
@@ -112,10 +115,15 @@ function equals(_) {
       newNum = false;
     }
     currOperation.y = y;
-    screen.textContent = currOperation.operate(
-      currOperation.x,
-      currOperation.y
-    );
+    let results = currOperation.operate(currOperation.x, currOperation.y);
+    if (Math.floor(results / 10 ** 8) > 1) {
+      // represent large numbers using e notation
+      results = results.toExponential(2);
+    } else if (results.toString().length > 8) {
+      // truncate long decimals
+      results = results.toString().substring(0, 8);
+    }
+    screen.textContent = results;
     // reset current operation and screen
     currOperation = null;
     newNum = true;
