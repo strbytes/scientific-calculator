@@ -20,6 +20,7 @@ operatorButtons.forEach((opButton) => {
 
 signButton.addEventListener("click", toggleSign);
 decimalButton.addEventListener("click", decimalAdd);
+equalsButton.addEventListener("click", equals);
 
 const operators = {
   add: (x, y) => x + y,
@@ -59,7 +60,9 @@ function numButtonPress(event) {
   }
 }
 
-function opButtonPress(event) {}
+function opButtonPress(event) {
+  // not implemented yet
+}
 
 function toggleSign(_) {
   // Don't toggle if screen is 0
@@ -78,4 +81,8 @@ function decimalAdd(_) {
   if (!screen.textContent.includes(".")) {
     screen.textContent += ".";
   }
+}
+
+function equals(_) {
+  // Not implemented yet
 }
