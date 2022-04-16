@@ -29,12 +29,26 @@ function operate(operator, x, y) {
 
 function numButtonPress(event) {
   num = event.target.id;
-  screen.textContent += num;
+  // If screen is 0, reset it with next entered number
+  if (screen.textContent === "0") {
+    // But only if the number is not 0
+    if (num !== "0") {
+      screen.textContent = num;
+    }
+    // otherwise, add the number to the end of the screen
+  } else {
+    screen.textContent += num;
+  }
 }
 
 function toggleSign(_) {
-  if (screen.textContent[0] === "-") {
+  // Don't toggle if screen is 0
+  if (screen.textContent !== "0") {
+    return;
+    // Remove '-' if present
+  } else if (screen.textContent[0] === "-") {
     screen.textContent = screen.textContent.substring(1);
+    // Add '-' if not present
   } else {
     screen.textContent = "-" + screen.textContent;
   }
