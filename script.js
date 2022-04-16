@@ -88,7 +88,7 @@ function opButtonPress(event) {
 
 function toggleSign(_) {
   // Don't toggle if screen is 0
-  if (screen.textContent !== "0") {
+  if (screen.textContent === "0") {
     return;
     // Remove '-' if present
   } else if (screen.textContent[0] === "-") {
@@ -116,14 +116,14 @@ function equals(_) {
     }
     currOperation.y = y;
     let results = currOperation.operate(currOperation.x, currOperation.y);
-    if (Math.floor(results / 10 ** 8) > 1) {
+    if (Math.floor(results / 10 ** 7) > 1) {
       // represent large numbers using e notation
       results = results.toExponential(2);
     } else if (results.toString().length > 8) {
       // truncate long decimals
       results = results.toString().substring(0, 8);
     }
-    screen.textContent = results;
+    screen.textContent = results.toString();
     // reset current operation and screen
     currOperation = null;
     newNum = true;
