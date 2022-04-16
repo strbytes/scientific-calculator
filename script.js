@@ -22,6 +22,8 @@ signButton.addEventListener("click", toggleSign);
 decimalButton.addEventListener("click", decimalAdd);
 equalsButton.addEventListener("click", equals);
 
+let currOperation;
+
 const operators = {
   add: (x, y) => x + y,
   sub: (x, y) => x - y,
@@ -30,8 +32,13 @@ const operators = {
   pct: (x) => x * 0.01,
 };
 
-function operate(operator, x, y) {
-  return operator(x, y);
+function Operation(operator, x) {
+  this.operator = operator;
+  this.x = x;
+  this.y;
+  this.operate = function () {
+    return this.operator(this.x, this.y);
+  };
 }
 
 function clearButtonPress(event) {
@@ -61,7 +68,9 @@ function numButtonPress(event) {
 }
 
 function opButtonPress(event) {
-  // not implemented yet
+  let operator = operators[event.target.id];
+  let num = +screen.textContent;
+  currOperation = new Operation(operator, num);
 }
 
 function toggleSign(_) {
