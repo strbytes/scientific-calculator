@@ -73,6 +73,10 @@ function numButtonPress(event) {
 }
 
 function opButtonPress(event) {
+  // If another operation started, complete it before starting the next one
+  if (currOperation) {
+    equals();
+  }
   let operator = operators[event.target.id];
   let num = +screen.textContent;
   currOperation = new Operation(operator, num);
@@ -112,6 +116,8 @@ function equals(_) {
       currOperation.x,
       currOperation.y
     );
+    // reset current operation and screen
     currOperation = null;
+    newNum = true;
   }
 }
