@@ -40,4 +40,15 @@ body {
 button {
   height: 100px;
   width: 100px;
+  font-size: 24px;
+  background-color: #e9e9ed;
+}
+
+.operators {
+  background-color: #ccc;
+}
+
+.clear {
+  background-color: #ddd;
+  color: blue;
 }
