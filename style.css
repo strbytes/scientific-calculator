@@ -25,6 +25,11 @@ body {
   height: 100px;
   background: #eee;
   border: 1px solid #999;
+  font-size: 72px;
+  padding: 0 10px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 #controls {
