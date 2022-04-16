@@ -22,7 +22,7 @@ signButton.addEventListener("click", toggleSign);
 decimalButton.addEventListener("click", decimalAdd);
 equalsButton.addEventListener("click", equals);
 
-let currOperation;
+let currOperation = null;
 let newNum = false;
 
 const operators = {
@@ -99,5 +99,19 @@ function decimalAdd(_) {
 }
 
 function equals(_) {
-  // Not implemented yet
+  // don't do anything if no operation started
+  if (currOperation) {
+    let y = +screen.textContent;
+    // Assume y = 0 if a new number hasn't been entered yet
+    if (newNum) {
+      y = 0;
+      newNum = false;
+    }
+    currOperation.y = y;
+    screen.textContent = currOperation.operate(
+      currOperation.x,
+      currOperation.y
+    );
+    currOperation = null;
+  }
 }
