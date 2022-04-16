@@ -1,7 +1,18 @@
-const nums = document.querySelectorAll(".numbers");
-const ops = document.querySelectorAll(".operators");
-const sign = document.querySelector("#sign");
-const decimal = document.querySelector("#decimal");
+const numberButtons = document.querySelectorAll(".numbers");
+const operatorButtons = document.querySelectorAll(".operators");
+const signButton = document.querySelector("#sign");
+const decimalButton = document.querySelector("#decimal");
+
+numberButtons.forEach((numButton) => {
+  numButton.addEventListener("click", numButtonPress);
+});
+
+operatorButtons.forEach((opButton) => {
+  opButton.addEventListener("click", opButtonPress);
+});
+
+signButton.addEventListener("click", toggleSign);
+decimalButton.addEventListener("click", decimalAdd);
 
 const operators = {
   add: (x, y) => x + y,
