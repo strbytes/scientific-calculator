@@ -31,3 +31,19 @@ function numButtonPress(event) {
   num = event.target.id;
   screen.textContent += num;
 }
+
+function toggleSign(_) {
+  if (screen.textContent[0] === "-") {
+    screen.textContent = screen.textContent.substring(1);
+  } else {
+    screen.textContent = "-" + screen.textContent;
+  }
+}
+
+function decimalAdd(_) {
+  if (!screen.textContent.includes(".")) {
+    screen.textContent += ".";
+  }
+}
+
+function opButtonPress(event) {}
