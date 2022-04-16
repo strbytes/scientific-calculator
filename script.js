@@ -1,3 +1,4 @@
+const screen = document.querySelector("#screen");
 const numberButtons = document.querySelectorAll(".numbers");
 const operatorButtons = document.querySelectorAll(".operators");
 const signButton = document.querySelector("#sign");
@@ -24,4 +25,9 @@ const operators = {
 
 function operate(operator, x, y) {
   return operator(x, y);
+}
+
+function numButtonPress(event) {
+  num = event.target.id;
+  screen.textContent += num;
 }
