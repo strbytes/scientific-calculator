@@ -23,6 +23,7 @@ decimalButton.addEventListener("click", decimalAdd);
 equalsButton.addEventListener("click", equals);
 
 let currOperation;
+let newNum = false;
 
 const operators = {
   add: (x, y) => x + y,
@@ -55,8 +56,12 @@ function clearButtonPress(event) {
 
 function numButtonPress(event) {
   num = event.target.id;
-  // If screen is 0, reset it with next entered number
-  if (screen.textContent === "0") {
+  // Reset screen when entering next number
+  if (newNum) {
+    screen.textContent = num;
+    newNum = false;
+  } else if (screen.textContent === "0") {
+    // If screen is 0, reset it with next entered number
     // But only if the number is not 0
     if (num !== "0") {
       screen.textContent = num;
@@ -71,6 +76,7 @@ function opButtonPress(event) {
   let operator = operators[event.target.id];
   let num = +screen.textContent;
   currOperation = new Operation(operator, num);
+  newNum = true;
 }
 
 function toggleSign(_) {
