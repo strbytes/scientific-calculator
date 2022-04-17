@@ -15,9 +15,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 5px;
+  gap: 10px;
   background-color: #555;
-  padding: 5px;
+  padding: 10px;
   border-radius: 5px;
 }
 
@@ -35,11 +35,13 @@ body {
 #controls {
   display: flex;
   flex-direction: column;
+  gap: 5px;
 }
 
 .button-row {
   display: flex;
   justify-content: space-between;
+  gap: 5px;
 }
 
 button {

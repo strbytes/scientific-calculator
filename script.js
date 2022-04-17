@@ -68,7 +68,7 @@ function numButtonPress(event) {
     // Reset screen when entering next number
     screen.textContent = num;
     newNum = false;
-  } else if (screen.textContent.length === 8) {
+  } else if (screen.textContent.length === 9) {
     // if entered number would exceed the length of the screen, do nothing
     return;
   } else if (screen.textContent === "0") {
@@ -148,13 +148,13 @@ function trimResults(results) {
   // Format results to fit screen
   if (results !== "ERR") {
     // Skip tests if results are an error
-    if (results.toExponential().split("e")[1] > 7) {
+    if (results.toExponential().split("e")[1] > 8) {
       // represent large numbers using e notation
       results = results.toExponential(2);
-    } else if (results.toExponential().split("e")[1] < -6) {
+    } else if (results.toExponential().split("e")[1] < -7) {
       // represent small numbers using e notation
       results = results.toExponential(2);
-    } else if (results.toString().length > 8) {
+    } else if (results.toString().length > 9) {
       // truncate long decimals
       results = results.toString().substring(0, 8);
     }
