@@ -20,10 +20,12 @@ operatorButtons.forEach((opButton) => {
 });
 
 rootButton.addEventListener("click", () => {
+  if (screen.textContent.includes("ERR")) return; // do nothing if error
   result = Math.sqrt(+screen.textContent);
   result = trimResults(result);
   screen.textContent = result;
 });
+
 signButton.addEventListener("click", toggleSign);
 decimalButton.addEventListener("click", decimalAdd);
 equalsButton.addEventListener("click", equals);
@@ -67,6 +69,10 @@ function clearButtonPress(event) {
 function numButtonPress(event) {
   num = event.target.id;
   if (newNum) {
+    if (screen.textContent.includes("ERR")) {
+      // first check for error and reset prevOperation if present
+      prevOperation = null;
+    }
     // Reset screen when entering next number
     screen.textContent = num;
     newNum = false;
@@ -90,6 +96,7 @@ function opButtonPress(event) {
   if (currOperation) {
     equals();
   }
+  if (screen.textContent.includes("ERR")) return; // do nothing if error present
   let operator = operators[event.target.id];
   let num = +screen.textContent;
   currOperation = new Operation(operator, num);
@@ -98,8 +105,8 @@ function opButtonPress(event) {
 }
 
 function toggleSign(_) {
-  // Don't toggle if screen is 0
-  if (screen.textContent === "0") {
+  // Don't toggle if screen is 0 or error
+  if (screen.textContent === "0" || screen.textContent.includes("ERR")) {
     return;
     // Remove '-' if present
   } else if (screen.textContent[0] === "-") {
@@ -111,7 +118,12 @@ function toggleSign(_) {
 }
 
 function decimalAdd(_) {
-  if (!screen.textContent.includes(".")) {
+  if (screen.textContent.includes("ERR")) return;
+  if (
+    !screen.textContent.includes(".") &&
+    !screen.textContent.includes("ERR")
+  ) {
+    // only add a decimal if none present and no error
     screen.textContent += ".";
   }
 }
@@ -148,7 +160,7 @@ function equals(_) {
 
 function trimResults(results) {
   // Format results to fit screen
-  if (results !== "ERR") {
+  if (!results.toString().includes("ERR")) {
     // Skip tests if results are an error
     if (results.toExponential().split("e")[1] > 8) {
       // represent large numbers using e notation
