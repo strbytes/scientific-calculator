@@ -23,6 +23,7 @@ decimalButton.addEventListener("click", decimalAdd);
 equalsButton.addEventListener("click", equals);
 
 let currOperation = null;
+let prevOperation = null;
 let newNum = false;
 
 const operators = {
@@ -53,6 +54,7 @@ function clearButtonPress(event) {
   } else {
     // Clear all
     currOperation = null;
+    prevOperation = null;
     screen.textContent = "0";
   }
 }
@@ -87,6 +89,7 @@ function opButtonPress(event) {
   let num = +screen.textContent;
   currOperation = new Operation(operator, num);
   newNum = true;
+  prevOperation = null;
 }
 
 function toggleSign(_) {
@@ -110,14 +113,22 @@ function decimalAdd(_) {
 
 function equals(_) {
   // don't do anything if no operation started
-  if (currOperation) {
-    let y = +screen.textContent;
-    // Assume y = 0 if a new number hasn't been entered yet
-    if (newNum) {
-      y = 0;
-      newNum = false;
+  if (currOperation || prevOperation) {
+    if (prevOperation) {
+      // check for previous operation to repeat
+      let x = +screen.textContent;
+      prevOperation.x = x;
+      currOperation = prevOperation;
+    } else if (currOperation) {
+      // if no previous, use current
+      let y = +screen.textContent;
+      // Assume y = 0 if a new number hasn't been entered yet
+      if (newNum) {
+        y = 0;
+        newNum = false;
+      }
+      currOperation.y = y;
     }
-    currOperation.y = y;
     let results = currOperation.operate(currOperation.x, currOperation.y);
     if (results !== "ERR") {
       // Skip tests if results are an error
@@ -130,7 +141,11 @@ function equals(_) {
       }
     }
     screen.textContent = results.toString();
+    // save previous operation
+    prevOperation = currOperation;
+    prevOperation.x = null;
     // reset current operation and screen
+
     currOperation = null;
     newNum = true;
   }
