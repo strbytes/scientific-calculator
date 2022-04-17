@@ -132,8 +132,10 @@ function equals(_) {
     let results = currOperation.operate(currOperation.x, currOperation.y);
     if (results !== "ERR") {
       // Skip tests if results are an error
-      if (Math.floor(results / 10 ** 7) > 1) {
+      if (results.toExponential().split("e")[1] > 7) {
         // represent large numbers using e notation
+        results = results.toExponential(2);
+      } else if (results.toExponential().split("e")[1] < -6) {
         results = results.toExponential(2);
       } else if (results.toString().length > 8) {
         // truncate long decimals
