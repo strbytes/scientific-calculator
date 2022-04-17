@@ -133,25 +133,31 @@ function equals(_) {
       currOperation.y = y;
     }
     let results = currOperation.operate(currOperation.x, currOperation.y);
-    if (results !== "ERR") {
-      // Skip tests if results are an error
-      if (results.toExponential().split("e")[1] > 7) {
-        // represent large numbers using e notation
-        results = results.toExponential(2);
-      } else if (results.toExponential().split("e")[1] < -6) {
-        results = results.toExponential(2);
-      } else if (results.toString().length > 8) {
-        // truncate long decimals
-        results = results.toString().substring(0, 8);
-      }
-    }
+    results = trimResults(results);
     screen.textContent = results.toString();
     // save previous operation
     prevOperation = currOperation;
     prevOperation.x = null;
     // reset current operation and screen
-
     currOperation = null;
     newNum = true;
   }
+}
+
+function trimResults(results) {
+  // Format results to fit screen
+  if (results !== "ERR") {
+    // Skip tests if results are an error
+    if (results.toExponential().split("e")[1] > 7) {
+      // represent large numbers using e notation
+      results = results.toExponential(2);
+    } else if (results.toExponential().split("e")[1] < -6) {
+      // represent small numbers using e notation
+      results = results.toExponential(2);
+    } else if (results.toString().length > 8) {
+      // truncate long decimals
+      results = results.toString().substring(0, 8);
+    }
+  }
+  return results;
 }
