@@ -18,18 +18,26 @@ body {
   gap: 10px;
   background-color: #555;
   padding: 10px;
+  border: 2px solid black;
   border-radius: 5px;
+  box-shadow: 5px 5px 5px grey;
 }
 
 #screen {
   height: 100px;
   background: #eee;
-  border: 1px solid #999;
+  border: 2px solid #999;
   font-size: 72px;
   padding: 0 10px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
+}
+
+#logo {
+  text-align: right;
+  font-style: italic;
+  margin-right: 50px;
 }
 
 #controls {
@@ -52,10 +60,18 @@ button {
 }
 
 .operators {
-  background-color: #ccc;
+  background-color: #cdc;
 }
 
 .clear {
-  background-color: #ddd;
+  background-color: #ccc;
   color: blue;
+}
+
+#root {
+  background-color: #ccd;
+}
+
+#equals {
+  background-color: #dcc;
 }
