@@ -1,5 +1,6 @@
 const screen = document.querySelector("#screen");
 const clearButtons = document.querySelectorAll(".clear");
+const percentButton = document.querySelector("#percent");
 const numberButtons = document.querySelectorAll(".numbers");
 const operatorButtons = document.querySelectorAll(".operators");
 const signButton = document.querySelector("#sign");
@@ -18,6 +19,9 @@ operatorButtons.forEach((opButton) => {
   opButton.addEventListener("click", opButtonPress);
 });
 
+percentButton.addEventListener("click", () => {
+  screen.textContent = +screen.textContent / 100;
+});
 signButton.addEventListener("click", toggleSign);
 decimalButton.addEventListener("click", decimalAdd);
 equalsButton.addEventListener("click", equals);
@@ -34,7 +38,6 @@ const operators = {
     if (y === 0) return "ERR";
     return x / y;
   },
-  pct: (x) => x * 0.01,
 };
 
 function Operation(operator, x) {
