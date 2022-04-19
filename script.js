@@ -1,4 +1,18 @@
+// ---- MODEL ----
+// functions object -- all calculator buttons have functions
+// calculator object -- stores state
+const Calculator = {
+  // state
+  // operations
+};
+
+// ---- VIEW ----
+// screen receives output of model
 const screen = document.querySelector("#screen");
+
+// ---- CONTROLLER ----
+// all buttons under one SelectorAll
+// all have one event listener -- uses id to choose operation
 const clearButtons = document.querySelectorAll(".clear");
 const rootButton = document.querySelector("#root");
 const numberButtons = document.querySelectorAll(".numbers");
