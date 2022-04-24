@@ -1,9 +1,65 @@
 // ---- MODEL ----
-// functions object -- all calculator buttons have functions
-// calculator object -- stores state
+// calculator object -- stores state and calculator functionality
 const Calculator = {
   // state
-  // operations
+  currOperation: null,
+  prevOperation: null,
+    // newNum should go in Screen
+  newNum: false,
+
+  // methods
+  newBinaryOperation: function (operator, x) {
+    // return an operation function that is executed when Calculator.execute is called
+    Calculator.newNum = true;
+    Calculator.prevOperation = null;
+    Calculator.currOperation = (y) => {
+      Calculator.newNum = true;
+      Calculator.newPrevOperation(operator, y);
+      return BinaryOperators[operator](x, y);
+    };
+  },
+
+  newPrevOperation: function (operator, y) {
+    Calculator.prevOperation = (x) => BinaryOperators[operator](x, y);
+  },
+  applyUnaryOperation: function (operator, x) {
+    // newNum should go in Screen
+    newNum = true;
+    return UnaryOperators[operator](x);
+  },
+
+  execute: function (y) {
+    if (Calculator.prevOperation) {
+      results = Calculator.prevOperation(y);
+    } else {
+      results = Calculator.currOperation(y);
+    }
+    // newNum should go in Screen
+    newNum = true;
+    return results;
+  },
+};
+
+// Store operations to be used by the calculator
+const BinaryOperators = {
+  add: (x, y) => x + y,
+  sub: (x, y) => x - y,
+  mul: (x, y) => x * y,
+  div: (x, y) => {
+    if (y === 0) return "ERR";
+    return x / y;
+  },
+  mod: (x, y) => {
+    if (y === 0) return "ERR";
+    return x % y;
+  },
+  exp: (x, y) => x ** y,
+};
+
+const UnaryOperators = {
+  inv: (x) => 1 / x,
+  sqrt: (x) => Math.sqrt(x),
+  log: (x) => Math.log(x),
 };
 
 // ---- VIEW ----
@@ -43,20 +99,6 @@ rootButton.addEventListener("click", () => {
 signButton.addEventListener("click", toggleSign);
 decimalButton.addEventListener("click", decimalAdd);
 equalsButton.addEventListener("click", equals);
-
-let currOperation = null;
-let prevOperation = null;
-let newNum = false;
-
-const operators = {
-  add: (x, y) => x + y,
-  sub: (x, y) => x - y,
-  mul: (x, y) => x * y,
-  div: (x, y) => {
-    if (y === 0) return "ERR";
-    return x / y;
-  },
-};
 
 function Operation(operator, x) {
   this.operator = operator;
