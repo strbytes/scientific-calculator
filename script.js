@@ -10,6 +10,8 @@ const Calculator = {
     // return an operation function that is executed when Calculator.execute is called
     Screen.newNum = true;
     Calculator.prevOperation = null;
+    // TODO - chaining operations - in Controls check if currOperation, if
+    // so then execute before starting new operation
     Calculator.currOperation = (y) => {
       Screen.newNum = true;
       Calculator.newPrevOperation(operator, y);
@@ -62,37 +64,74 @@ const UnaryOperators = {
 // screen receives output of model
 
 const Screen = {
-  screen: document.querySelector("#screen"),
+  screenSelector: document.querySelector("#screen"),
   newNum: false,
   display: function (results) {
-    Screen.screen.textContent = this.trimResults(results);
+    Screen.screenSelector.textContent = this.trimResults(results);
   },
+
   trimResults: function (results) {
     // Format results to fit screen
     if (!results.toString().includes("ERR")) {
       // Skip tests if results are an error
-      if (results.toExponential().split("e")[1] > 8) {
-        // represent large numbers using e notation
-        results = results.toExponential(2);
-      } else if (results.toExponential().split("e")[1] < -7) {
-        // represent small numbers using e notation
-        results = results.toExponential(2);
-      } else if (results.toString().length > 9) {
-        // truncate long decimals
-        results = results.toString().substring(0, 8);
-      }
+      return results;
+    } else if (results.toExponential().split("e")[1] > 8) {
+      // represent large numbers using e notation
+      results = results.toExponential(2);
+    } else if (results.toExponential().split("e")[1] < -7) {
+      // represent small numbers using e notation
+      results = results.toExponential(2);
+    } else if (results.toString().length > 9) {
+      // truncate long decimals
+      results = results.toString().substring(0, 8);
     }
     return results;
+  },
+
+  addDigit: function (num) {
+    if (Screen.newNum) {
+      if (Screen.screenSelector.textContent.includes("ERR")) {
+        // first check for error and reset prevOperation if present
+        Calculator.prevOperation = null;
+      }
+      // Reset screen when entering next number
+      Screen.screenSelector.textContent = num;
+      Screen.newNum = false;
+    } else if (Screen.screenSelector.textContent.length === 9) {
+      // if entered number would exceed the length of the screen, do nothing
+      return;
+    } else if (Screen.screenSelector.textContent === "0") {
+      // If screen is 0, reset it with next entered number
+      // But only if the number is not 0
+      if (num !== "0") {
+        Screen.screenSelector.textContent = num;
+      }
+      // otherwise, add the number to the end of the screen
+    } else {
+      Screen.screenSelector.textContent += num;
+    }
   },
 };
 
 // ---- CONTROLLER ----
-// all buttons under one SelectorAll
-// all have one event listener -- uses id to choose operation
-const clearButtons = document.querySelectorAll(".clear");
-const rootButton = document.querySelector("#root");
+// Controller object - contains control logic
+const Controls = {
+  numButtonPress: function (event) {
+    num = event.target.id;
+    Screen.addDigit(num);
+  },
+};
+
+// buttons and listeners global
+// buttons selectors divided by grouping (numbers, binary operators, clear, etc)
 const numberButtons = document.querySelectorAll(".numbers");
-const operatorButtons = document.querySelectorAll(".operators");
+numberButtons.forEach((numButton) => {
+  numButton.addEventListener("click", Controls.numButtonPress);
+});
+
+const clearButtons = document.querySelectorAll(".clear");
+const unaryOperatorButtons = document.querySelector("#root");
+const binaryOperatorButtons = document.querySelectorAll(".operators");
 const signButton = document.querySelector("#sign");
 const decimalButton = document.querySelector("#decimal");
 const equalsButton = document.querySelector("#equals");
@@ -101,20 +140,16 @@ clearButtons.forEach((clearButton) => {
   clearButton.addEventListener("click", clearButtonPress);
 });
 
-numberButtons.forEach((numButton) => {
-  numButton.addEventListener("click", numButtonPress);
-});
+// operatorButtons.forEach((opButton) => {
+//   opButton.addEventListener("click", opButtonPress);
+// });
 
-operatorButtons.forEach((opButton) => {
-  opButton.addEventListener("click", opButtonPress);
-});
-
-rootButton.addEventListener("click", () => {
-  if (screen.textContent.includes("ERR")) return; // do nothing if error
-  result = Math.sqrt(+screen.textContent);
-  result = trimResults(result);
-  screen.textContent = result;
-});
+// rootButton.addEventListener("click", () => {
+//   if (screen.textContent.includes("ERR")) return; // do nothing if error
+//   result = Math.sqrt(+screen.textContent);
+//   result = trimResults(result);
+//   screen.textContent = result;
+// });
 
 signButton.addEventListener("click", toggleSign);
 decimalButton.addEventListener("click", decimalAdd);
@@ -139,31 +174,6 @@ function clearButtonPress(event) {
     currOperation = null;
     prevOperation = null;
     screen.textContent = "0";
-  }
-}
-
-function numButtonPress(event) {
-  num = event.target.id;
-  if (newNum) {
-    if (screen.textContent.includes("ERR")) {
-      // first check for error and reset prevOperation if present
-      prevOperation = null;
-    }
-    // Reset screen when entering next number
-    screen.textContent = num;
-    newNum = false;
-  } else if (screen.textContent.length === 9) {
-    // if entered number would exceed the length of the screen, do nothing
-    return;
-  } else if (screen.textContent === "0") {
-    // If screen is 0, reset it with next entered number
-    // But only if the number is not 0
-    if (num !== "0") {
-      screen.textContent = num;
-    }
-    // otherwise, add the number to the end of the screen
-  } else {
-    screen.textContent += num;
   }
 }
 
@@ -233,5 +243,3 @@ function equals(_) {
     newNum = true;
   }
 }
-
-function trimResults(results) {}
