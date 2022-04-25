@@ -10,7 +10,7 @@ const Calculator = {
     // return an operation function that is executed when Calculator.execute is called
     Calculator.prevOperation = null;
     Calculator.currOperation = (y) => {
-      Screen.newNum = true;
+      // When executed, set prevOperation to repeat the current operation
       Calculator.newPrevOperation(operator, y);
       return BinaryOperators[operator](x, y);
     };
@@ -32,7 +32,6 @@ const Calculator = {
     } else if (Calculator.currOperation) {
       Screen.display(Calculator.currOperation(y));
     }
-    Screen.newNum = true;
     Calculator.currOperation = null;
   },
 };
@@ -77,7 +76,7 @@ const Screen = {
     } else if (results.toExponential().split("e")[1] > 8) {
       // represent large numbers using e notation
       results = results.toExponential(2);
-    } else if (results.toExponential().split("e")[1] < -7) {
+    } else if (results.toExponential().split("e")[1] < -6) {
       // represent small numbers using e notation
       results = results.toExponential(2);
     } else if (results.toString().length > 9) {
@@ -145,8 +144,9 @@ function binaryOperatorButtonPress(event) {
 
 const equalsButton = document.querySelector("#equals");
 equalsButton.addEventListener("click", equalsButtonPress);
-function equalsButtonPress(event) {
+function equalsButtonPress(_) {
   Calculator.execute(+Screen.screenSelector.textContent);
+  Screen.newNum = true;
 }
 
 const clearButtons = document.querySelectorAll(".clear");
