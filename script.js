@@ -22,7 +22,6 @@ const Calculator = {
     };
   },
   applyUnaryOperation: function (operator, x) {
-    Screen.newNum = true;
     Screen.display(UnaryOperators[operator](x));
   },
 
@@ -34,6 +33,11 @@ const Calculator = {
       Screen.display(Calculator.currOperation(y));
     }
     Calculator.currOperation = null;
+  },
+
+  clear: function () {
+    Calculator.currOperation = null;
+    Calculator.prevOperation = null;
   },
 };
 
@@ -141,8 +145,20 @@ function binaryOperatorButtonPress(event) {
     // operations if another operator button is pressed
     Calculator.execute(num);
   }
-  Calculator.newBinaryOperation(operator, +Screen.screenSelector.textContent);
+  Calculator.newBinaryOperation(operator, num);
   Screen.newNum = true;
+}
+
+const unaryOperatorButtons = document.querySelector(".unaryOperators");
+unaryOperatorButtons.addEventListener("click", unaryOperatorButtonPress);
+function unaryOperatorButtonPress(event) {
+  if (Screen.screenSelector.textContent.includes("ERR"))
+    return; // do nothing if error
+  else if (Screen.newNum) Calculator.clear();
+  let operator = event.target.id;
+  num = +Screen.screenSelector.textContent;
+  Screen.display(UnaryOperators[operator](num));
+  // Screen.newNum = true;
 }
 
 const equalsButton = document.querySelector("#equals");
@@ -161,13 +177,9 @@ function clearButtonPress(event) {
   Screen.screenSelector.textContent = "0";
   if (event.target.id == "C") {
     // Clear all
-    Calculator.currOperation = null;
-    Calculator.prevOperation = null;
+    Calculator.clear();
   }
 }
-
-const unaryOperatorButtons = document.querySelector("#root");
-unaryOperatorButtons.querySelectorAll(".unaryOperators");
 
 const signButton = document.querySelector("#sign");
 const decimalButton = document.querySelector("#decimal");
