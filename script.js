@@ -4,16 +4,14 @@ const Calculator = {
   // state
   currOperation: null,
   prevOperation: null,
-    // newNum should go in Screen
-  newNum: false,
 
   // methods
   newBinaryOperation: function (operator, x) {
     // return an operation function that is executed when Calculator.execute is called
-    Calculator.newNum = true;
+    Screen.newNum = true;
     Calculator.prevOperation = null;
     Calculator.currOperation = (y) => {
-      Calculator.newNum = true;
+      Screen.newNum = true;
       Calculator.newPrevOperation(operator, y);
       return BinaryOperators[operator](x, y);
     };
@@ -23,9 +21,8 @@ const Calculator = {
     Calculator.prevOperation = (x) => BinaryOperators[operator](x, y);
   },
   applyUnaryOperation: function (operator, x) {
-    // newNum should go in Screen
-    newNum = true;
-    return UnaryOperators[operator](x);
+    Screen.newNum = true;
+    Screen.display(UnaryOperators[operator](x));
   },
 
   execute: function (y) {
@@ -34,9 +31,8 @@ const Calculator = {
     } else {
       results = Calculator.currOperation(y);
     }
-    // newNum should go in Screen
-    newNum = true;
-    return results;
+    Screen.newNum = true;
+    Screen.display(results);
   },
 };
 
@@ -64,7 +60,31 @@ const UnaryOperators = {
 
 // ---- VIEW ----
 // screen receives output of model
-const screen = document.querySelector("#screen");
+
+const Screen = {
+  screen: document.querySelector("#screen"),
+  newNum: false,
+  display: function (results) {
+    Screen.screen.textContent = this.trimResults(results);
+  },
+  trimResults: function (results) {
+    // Format results to fit screen
+    if (!results.toString().includes("ERR")) {
+      // Skip tests if results are an error
+      if (results.toExponential().split("e")[1] > 8) {
+        // represent large numbers using e notation
+        results = results.toExponential(2);
+      } else if (results.toExponential().split("e")[1] < -7) {
+        // represent small numbers using e notation
+        results = results.toExponential(2);
+      } else if (results.toString().length > 9) {
+        // truncate long decimals
+        results = results.toString().substring(0, 8);
+      }
+    }
+    return results;
+  },
+};
 
 // ---- CONTROLLER ----
 // all buttons under one SelectorAll
@@ -214,20 +234,4 @@ function equals(_) {
   }
 }
 
-function trimResults(results) {
-  // Format results to fit screen
-  if (!results.toString().includes("ERR")) {
-    // Skip tests if results are an error
-    if (results.toExponential().split("e")[1] > 8) {
-      // represent large numbers using e notation
-      results = results.toExponential(2);
-    } else if (results.toExponential().split("e")[1] < -7) {
-      // represent small numbers using e notation
-      results = results.toExponential(2);
-    } else if (results.toString().length > 9) {
-      // truncate long decimals
-      results = results.toString().substring(0, 8);
-    }
-  }
-  return results;
-}
+function trimResults(results) {}
