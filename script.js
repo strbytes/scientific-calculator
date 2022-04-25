@@ -30,6 +30,7 @@ const Calculator = {
     if (Calculator.prevOperation) {
       Screen.display(Calculator.prevOperation(y));
     } else if (Calculator.currOperation) {
+      if (Screen.newNum) y = 0;
       Screen.display(Calculator.currOperation(y));
     }
     Calculator.currOperation = null;
@@ -59,7 +60,7 @@ const UnaryOperators = {
 };
 
 // ---- VIEW ----
-// screen receives output of model
+// screen receives output of model and certain input from controls
 
 const Screen = {
   screenSelector: document.querySelector("#screen"),
@@ -113,7 +114,7 @@ const Screen = {
 };
 
 // ---- CONTROLLER ----
-// buttons and listeners global
+// No Controller object, just global selectors and listeners
 // buttons selectors divided by grouping (numbers, binary operators, clear, etc)
 
 const numberButtons = document.querySelectorAll(".numbers");
@@ -125,7 +126,7 @@ function numButtonPress(event) {
   Screen.addDigit(num);
 }
 
-const binaryOperatorButtons = document.querySelectorAll(".operators");
+const binaryOperatorButtons = document.querySelectorAll(".binaryOperators");
 binaryOperatorButtons.forEach((binaryOperatorButton) => {
   binaryOperatorButton.addEventListener("click", binaryOperatorButtonPress);
 });
@@ -136,6 +137,8 @@ function binaryOperatorButtonPress(event) {
   let operator = event.target.id;
   let num = +Screen.screenSelector.textContent;
   if (Calculator.currOperation) {
+    // chain operations by automatically executing partially-entered
+    // operations if another operator button is pressed
     Calculator.execute(num);
   }
   Calculator.newBinaryOperation(operator, +Screen.screenSelector.textContent);
@@ -164,6 +167,8 @@ function clearButtonPress(event) {
 }
 
 const unaryOperatorButtons = document.querySelector("#root");
+unaryOperatorButtons.querySelectorAll(".unaryOperators");
+
 const signButton = document.querySelector("#sign");
 const decimalButton = document.querySelector("#decimal");
 
