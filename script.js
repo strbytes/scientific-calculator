@@ -8,10 +8,7 @@ const Calculator = {
   // methods
   newBinaryOperation: function (operator, x) {
     // return an operation function that is executed when Calculator.execute is called
-    Screen.newNum = true;
     Calculator.prevOperation = null;
-    // TODO - chaining operations - in Controls check if currOperation, if
-    // so then execute before starting new operation
     Calculator.currOperation = (y) => {
       Screen.newNum = true;
       Calculator.newPrevOperation(operator, y);
@@ -20,7 +17,9 @@ const Calculator = {
   },
 
   newPrevOperation: function (operator, y) {
-    Calculator.prevOperation = (x) => BinaryOperators[operator](x, y);
+    Calculator.prevOperation = (x) => {
+      return BinaryOperators[operator](x, y);
+    };
   },
   applyUnaryOperation: function (operator, x) {
     Screen.newNum = true;
@@ -29,12 +28,12 @@ const Calculator = {
 
   execute: function (y) {
     if (Calculator.prevOperation) {
-      results = Calculator.prevOperation(y);
-    } else {
-      results = Calculator.currOperation(y);
+      Screen.display(Calculator.prevOperation(y));
+    } else if (Calculator.currOperation) {
+      Screen.display(Calculator.currOperation(y));
     }
     Screen.newNum = true;
-    Screen.display(results);
+    Calculator.currOperation = null;
   },
 };
 
@@ -72,7 +71,7 @@ const Screen = {
 
   trimResults: function (results) {
     // Format results to fit screen
-    if (!results.toString().includes("ERR")) {
+    if (results.toString().includes("ERR")) {
       // Skip tests if results are an error
       return results;
     } else if (results.toExponential().split("e")[1] > 8) {
@@ -90,10 +89,7 @@ const Screen = {
 
   addDigit: function (num) {
     if (Screen.newNum) {
-      if (Screen.screenSelector.textContent.includes("ERR")) {
-        // first check for error and reset prevOperation if present
-        Calculator.prevOperation = null;
-      }
+      Calculator.prevOperation = null;
       // Reset screen when entering next number
       Screen.screenSelector.textContent = num;
       Screen.newNum = false;
@@ -111,38 +107,65 @@ const Screen = {
       Screen.screenSelector.textContent += num;
     }
   },
-};
 
-// ---- CONTROLLER ----
-// Controller object - contains control logic
-const Controls = {
-  numButtonPress: function (event) {
-    num = event.target.id;
-    Screen.addDigit(num);
+  clearScreen: function () {
+    Screen.screenSelector.textContent = 0;
   },
 };
 
+// ---- CONTROLLER ----
 // buttons and listeners global
 // buttons selectors divided by grouping (numbers, binary operators, clear, etc)
+
 const numberButtons = document.querySelectorAll(".numbers");
 numberButtons.forEach((numButton) => {
-  numButton.addEventListener("click", Controls.numButtonPress);
+  numButton.addEventListener("click", numButtonPress);
 });
+function numButtonPress(event) {
+  let num = event.target.id;
+  Screen.addDigit(num);
+}
+
+const binaryOperatorButtons = document.querySelectorAll(".operators");
+binaryOperatorButtons.forEach((binaryOperatorButton) => {
+  binaryOperatorButton.addEventListener("click", binaryOperatorButtonPress);
+});
+function binaryOperatorButtonPress(event) {
+  if (Screen.screenSelector.textContent.includes("ERR")) {
+    return; // do nothing if error present
+  }
+  let operator = event.target.id;
+  let num = +Screen.screenSelector.textContent;
+  if (Calculator.currOperation) {
+    Calculator.execute(num);
+  }
+  Calculator.newBinaryOperation(operator, +Screen.screenSelector.textContent);
+  Screen.newNum = true;
+}
+
+const equalsButton = document.querySelector("#equals");
+equalsButton.addEventListener("click", equalsButtonPress);
+function equalsButtonPress(event) {
+  Calculator.execute(+Screen.screenSelector.textContent);
+}
 
 const clearButtons = document.querySelectorAll(".clear");
-const unaryOperatorButtons = document.querySelector("#root");
-const binaryOperatorButtons = document.querySelectorAll(".operators");
-const signButton = document.querySelector("#sign");
-const decimalButton = document.querySelector("#decimal");
-const equalsButton = document.querySelector("#equals");
-
 clearButtons.forEach((clearButton) => {
   clearButton.addEventListener("click", clearButtonPress);
 });
+function clearButtonPress(event) {
+  // Clear the screen
+  Screen.screenSelector.textContent = "0";
+  if (event.target.id == "C") {
+    // Clear all
+    Calculator.currOperation = null;
+    Calculator.prevOperation = null;
+  }
+}
 
-// operatorButtons.forEach((opButton) => {
-//   opButton.addEventListener("click", opButtonPress);
-// });
+const unaryOperatorButtons = document.querySelector("#root");
+const signButton = document.querySelector("#sign");
+const decimalButton = document.querySelector("#decimal");
 
 // rootButton.addEventListener("click", () => {
 //   if (screen.textContent.includes("ERR")) return; // do nothing if error
@@ -153,7 +176,6 @@ clearButtons.forEach((clearButton) => {
 
 signButton.addEventListener("click", toggleSign);
 decimalButton.addEventListener("click", decimalAdd);
-equalsButton.addEventListener("click", equals);
 
 function Operation(operator, x) {
   this.operator = operator;
@@ -164,25 +186,11 @@ function Operation(operator, x) {
   };
 }
 
-function clearButtonPress(event) {
-  // Clear the screen and all variables
-  if (event.target.id === "CE") {
-    // Clear screen only
-    screen.textContent = "0";
-  } else {
-    // Clear all
-    currOperation = null;
-    prevOperation = null;
-    screen.textContent = "0";
-  }
-}
-
 function opButtonPress(event) {
   // If another operation started, complete it before starting the next one
   if (currOperation) {
     equals();
   }
-  if (screen.textContent.includes("ERR")) return; // do nothing if error present
   let operator = operators[event.target.id];
   let num = +screen.textContent;
   currOperation = new Operation(operator, num);
