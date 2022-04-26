@@ -1,13 +1,13 @@
 // ---- MODEL ----
-// calculator object -- stores state and calculator functionality
+// Calculator object -- stores state and calculator functionality
 const Calculator = {
-  // state
+  // State
   currOperation: null,
   prevOperation: null,
 
-  // methods
+  // Methods
   newBinaryOperation: function (operator, x) {
-    // return an operation function that is executed when Calculator.execute is called
+    // Return an operation function that is executed when Calculator.execute is called
     Calculator.prevOperation = null;
     Calculator.currOperation = (y) => {
       // When executed, set prevOperation to repeat the current operation
@@ -64,13 +64,19 @@ const UnaryOperators = {
 };
 
 // ---- VIEW ----
-// screen receives output of model and certain input from controls
+// Screen receives output of model and certain input from controls
 
 const Screen = {
   screenSelector: document.querySelector("#screen"),
   newNum: false,
   display: function (results) {
     Screen.screenSelector.textContent = this.trimResults(results);
+  },
+  read: function () {
+    return Screen.screenSelector.textContent;
+  },
+  checkError: function () {
+    return Screen.read().includes("ERR") || Screen.read().includes("NaN");
   },
 
   trimResults: function (results) {
@@ -79,13 +85,13 @@ const Screen = {
       // Skip tests if results are an error
       return results;
     } else if (results.toExponential().split("e")[1] > 8) {
-      // represent large numbers using e notation
+      // Represent large numbers using e notation
       results = results.toExponential(2);
     } else if (results.toExponential().split("e")[1] < -6) {
-      // represent small numbers using e notation
+      // Represent small numbers using e notation
       results = results.toExponential(2);
     } else if (results.toString().length > 9) {
-      // truncate long decimals
+      // Truncate long decimals
       results = results.toString().substring(0, 8);
     }
     return results;
@@ -98,20 +104,31 @@ const Screen = {
       Screen.screenSelector.textContent = num;
       Screen.newNum = false;
     } else if (Screen.screenSelector.textContent.length === 9) {
-      // if entered number would exceed the length of the screen, do nothing
+      // If entered number would exceed the length of the screen, do nothing
       return;
-    } else if (Screen.screenSelector.textContent === "0") {
+    } else if (Screen.read() === "0") {
       // If screen is 0, reset it with next entered number
       // But only if the number is not 0
       if (num !== "0") {
         Screen.screenSelector.textContent = num;
       }
-      // otherwise, add the number to the end of the screen
+      // Otherwise, add the number to the end of the screen
     } else {
       Screen.screenSelector.textContent += num;
     }
   },
 
+  toggleSign: function () {
+    if (Screen.read()[0] === "-") {
+      // Remove '-' if present
+      Screen.screenSelector.textContent =
+        Screen.screenSelector.textContent.substring(1);
+    } else {
+      // Add '-' if not present
+      Screen.screenSelector.textContent =
+        "-" + Screen.screenSelector.textContent;
+    }
+  },
   clearScreen: function () {
     Screen.screenSelector.textContent = 0;
   },
@@ -119,7 +136,7 @@ const Screen = {
 
 // ---- CONTROLLER ----
 // No Controller object, just global selectors and listeners
-// buttons selectors divided by grouping (numbers, binary operators, clear, etc)
+// Buttons selectors divided by grouping (numbers, binary operators, clear, etc)
 
 const numberButtons = document.querySelectorAll(".numbers");
 numberButtons.forEach((numButton) => {
@@ -135,15 +152,16 @@ binaryOperatorButtons.forEach((binaryOperatorButton) => {
   binaryOperatorButton.addEventListener("click", binaryOperatorButtonPress);
 });
 function binaryOperatorButtonPress(event) {
-  if (Screen.screenSelector.textContent.includes("ERR")) {
-    return; // do nothing if error present
+  if (Screen.checkError()) {
+    return; // Do nothing if error present
   }
   let operator = event.target.id;
-  let num = +Screen.screenSelector.textContent;
+  let num = +Screen.read();
   if (Calculator.currOperation) {
-    // chain operations by automatically executing partially-entered
+    // Chain operations by automatically executing partially-entered
     // operations if another operator button is pressed
     Calculator.execute(num);
+    num = +Screen.read();
   }
   Calculator.newBinaryOperation(operator, num);
   Screen.newNum = true;
@@ -152,11 +170,10 @@ function binaryOperatorButtonPress(event) {
 const unaryOperatorButtons = document.querySelector(".unaryOperators");
 unaryOperatorButtons.addEventListener("click", unaryOperatorButtonPress);
 function unaryOperatorButtonPress(event) {
-  if (Screen.screenSelector.textContent.includes("ERR"))
-    return; // do nothing if error
+  if (Screen.checkError()) return; // Do nothing if error
   else if (Screen.newNum) Calculator.clear();
   let operator = event.target.id;
-  num = +Screen.screenSelector.textContent;
+  num = +Screen.read();
   Screen.display(UnaryOperators[operator](num));
   // Screen.newNum = true;
 }
@@ -164,7 +181,7 @@ function unaryOperatorButtonPress(event) {
 const equalsButton = document.querySelector("#equals");
 equalsButton.addEventListener("click", equalsButtonPress);
 function equalsButtonPress(_) {
-  Calculator.execute(+Screen.screenSelector.textContent);
+  Calculator.execute(+Screen.read());
   Screen.newNum = true;
 }
 
@@ -174,7 +191,7 @@ clearButtons.forEach((clearButton) => {
 });
 function clearButtonPress(event) {
   // Clear the screen
-  Screen.screenSelector.textContent = "0";
+  Screen.clearScreen();
   if (event.target.id == "C") {
     // Clear all
     Calculator.clear();
@@ -182,89 +199,22 @@ function clearButtonPress(event) {
 }
 
 const signButton = document.querySelector("#sign");
-const decimalButton = document.querySelector("#decimal");
-
-// rootButton.addEventListener("click", () => {
-//   if (screen.textContent.includes("ERR")) return; // do nothing if error
-//   result = Math.sqrt(+screen.textContent);
-//   result = trimResults(result);
-//   screen.textContent = result;
-// });
-
-signButton.addEventListener("click", toggleSign);
-decimalButton.addEventListener("click", decimalAdd);
-
-function Operation(operator, x) {
-  this.operator = operator;
-  this.x = x;
-  this.y;
-  this.operate = function () {
-    return this.operator(this.x, this.y);
-  };
-}
-
-function opButtonPress(event) {
-  // If another operation started, complete it before starting the next one
-  if (currOperation) {
-    equals();
-  }
-  let operator = operators[event.target.id];
-  let num = +screen.textContent;
-  currOperation = new Operation(operator, num);
-  newNum = true;
-  prevOperation = null;
-}
-
-function toggleSign(_) {
+signButton.addEventListener("click", signButtonPress);
+function signButtonPress(_) {
   // Don't toggle if screen is 0 or error
-  if (screen.textContent === "0" || screen.textContent.includes("ERR")) {
+  if (Screen.read() === "0" || Screen.checkError()) {
     return;
-    // Remove '-' if present
-  } else if (screen.textContent[0] === "-") {
-    screen.textContent = screen.textContent.substring(1);
-    // Add '-' if not present
   } else {
-    screen.textContent = "-" + screen.textContent;
+    Screen.toggleSign();
   }
 }
 
+const decimalButton = document.querySelector("#decimal");
+decimalButton.addEventListener("click", decimalAdd);
 function decimalAdd(_) {
-  if (screen.textContent.includes("ERR")) return;
-  if (
-    !screen.textContent.includes(".") &&
-    !screen.textContent.includes("ERR")
-  ) {
-    // only add a decimal if none present and no error
-    screen.textContent += ".";
-  }
-}
-
-function equals(_) {
-  // don't do anything if no operation started
-  if (currOperation || prevOperation) {
-    if (prevOperation) {
-      // check for previous operation to repeat
-      let x = +screen.textContent;
-      prevOperation.x = x;
-      currOperation = prevOperation;
-    } else if (currOperation) {
-      // if no previous, use current
-      let y = +screen.textContent;
-      // Assume y = 0 if a new number hasn't been entered yet
-      if (newNum) {
-        y = 0;
-        newNum = false;
-      }
-      currOperation.y = y;
-    }
-    let results = currOperation.operate(currOperation.x, currOperation.y);
-    results = trimResults(results);
-    screen.textContent = results.toString();
-    // save previous operation
-    prevOperation = currOperation;
-    prevOperation.x = null;
-    // reset current operation and screen
-    currOperation = null;
-    newNum = true;
+  if (Screen.checkError()) return;
+  if (!Screen.read().includes(".") && !Screen.checkError()) {
+    // Only add a decimal if none present and no error
+    Screen.addDigit(".");
   }
 }
