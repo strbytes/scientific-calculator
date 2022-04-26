@@ -2,12 +2,19 @@
 // Calculator object -- stores state and calculator functionality
 const Calculator = {
   // State
+  // currOperation: Stores (as a higher-order function) the operator and first
+  //   operand of an operation once an operator button is pressed
+  // prevOperation: Stores (as a higher-order function) the operator and second
+  //   operand from a completed operation to enable repeated operations with
+  //   repeated pressing of the = key
   currOperation: null,
   prevOperation: null,
 
   // Methods
   newBinaryOperation: function (operator, x) {
-    // Return an operation function that is executed when Calculator.execute is called
+    // Set the currOperation to a function that is executed when
+    // Calculator.execute is called
+    // Clear the previous operation when starting a new one
     Calculator.prevOperation = null;
     Calculator.currOperation = (y) => {
       // When executed, set prevOperation to repeat the current operation
@@ -17,18 +24,23 @@ const Calculator = {
   },
 
   newPrevOperation: function (operator, y) {
+    // Set prevOperation to enable repeating the previous operation
     Calculator.prevOperation = (x) => {
       return BinaryOperators[operator](x, y);
     };
   },
   applyUnaryOperation: function (operator, x) {
+    // Apply unary operations immediately
     Screen.display(UnaryOperators[operator](x));
   },
 
   execute: function (y) {
+    // Execute prevOperation if it exists
     if (Calculator.prevOperation) {
       Screen.display(Calculator.prevOperation(y));
     } else if (Calculator.currOperation) {
+      // Else finish the current operation
+      // Use 0 as the second operand if no new number has been entered
       if (Screen.newNum) y = 0;
       Screen.display(Calculator.currOperation(y));
     }
@@ -67,15 +79,25 @@ const UnaryOperators = {
 // Screen receives output of model and certain input from controls
 
 const Screen = {
+  // State
+  // screenSelector: stores the #screen node
+  // newNum: Set when an operation has been executed or the screen is cleared.
+  //  Prevents adding digits to the results of operations. Currently does not
+  //  work with unary operations.
   screenSelector: document.querySelector("#screen"),
   newNum: true,
+
+  // Methods
   display: function (results) {
+    // Set the screen to show the results of an operation
     Screen.screenSelector.textContent = this.trimResults(results);
   },
   read: function () {
+    // Return the contents of the screen
     return Screen.screenSelector.textContent;
   },
   checkError: function () {
+    // Return whether the screen is showing an error
     return Screen.read().includes("ERR") || Screen.read().includes("NaN");
   },
 
@@ -98,12 +120,15 @@ const Screen = {
   },
 
   addDigit: function (num) {
+    // Input new numbers to the screen
     if (Screen.newNum) {
+      // Reset screen and prevOperation when entering next number
       Calculator.prevOperation = null;
-      // Reset screen when entering next number
+      // Decimal as first digit of new number should keep the 0
       if (num === ".") {
         Screen.screenSelector.textContent = "0.";
       } else {
+        // Otherwise eliminate leading 0
         Screen.screenSelector.textContent = num;
       }
       Screen.newNum = false;
@@ -112,7 +137,7 @@ const Screen = {
       return;
     } else if (Screen.read() === "0") {
       // If screen is 0, reset it with next entered number
-      // But only if the number is not 0
+      // But only if the number is not 0 or the decimal marker
       if (num === ".") {
         Screen.screenSelector.textContent = "0.";
       } else if (num !== "0") {
