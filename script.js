@@ -113,10 +113,10 @@ const Screen = {
     } else if (Screen.read() === "0") {
       // If screen is 0, reset it with next entered number
       // But only if the number is not 0
-      if (num !== "0") {
-        Screen.screenSelector.textContent = num;
-      } else if (num === ".") {
+      if (num === ".") {
         Screen.screenSelector.textContent = "0.";
+      } else if (num !== "0") {
+        Screen.screenSelector.textContent = num;
       }
       // Otherwise, add the number to the end of the screen
     } else {
