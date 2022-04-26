@@ -68,7 +68,7 @@ const UnaryOperators = {
 
 const Screen = {
   screenSelector: document.querySelector("#screen"),
-  newNum: false,
+  newNum: true,
   display: function (results) {
     Screen.screenSelector.textContent = this.trimResults(results);
   },
@@ -101,7 +101,11 @@ const Screen = {
     if (Screen.newNum) {
       Calculator.prevOperation = null;
       // Reset screen when entering next number
-      Screen.screenSelector.textContent = num;
+      if (num === ".") {
+        Screen.screenSelector.textContent = "0.";
+      } else {
+        Screen.screenSelector.textContent = num;
+      }
       Screen.newNum = false;
     } else if (Screen.screenSelector.textContent.length === 9) {
       // If entered number would exceed the length of the screen, do nothing
@@ -111,6 +115,8 @@ const Screen = {
       // But only if the number is not 0
       if (num !== "0") {
         Screen.screenSelector.textContent = num;
+      } else if (num === ".") {
+        Screen.screenSelector.textContent = "0.";
       }
       // Otherwise, add the number to the end of the screen
     } else {
