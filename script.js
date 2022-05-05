@@ -171,22 +171,24 @@ const Screen = {
 
 const numberButtons = document.querySelectorAll(".numbers");
 numberButtons.forEach((numButton) => {
-  numButton.addEventListener("click", numButtonPress);
+  numButton.addEventListener("click", (event) => {
+    numButtonPress(event.target.id);
+  });
 });
-function numButtonPress(event) {
-  let num = event.target.id;
+function numButtonPress(num) {
   Screen.addDigit(num);
 }
 
 const binaryOperatorButtons = document.querySelectorAll(".binaryOperators");
 binaryOperatorButtons.forEach((binaryOperatorButton) => {
-  binaryOperatorButton.addEventListener("click", binaryOperatorButtonPress);
+  binaryOperatorButton.addEventListener("click", (event) => {
+    binaryOperatorButtonPress(event.target.id);
+  });
 });
-function binaryOperatorButtonPress(event) {
+function binaryOperatorButtonPress(operator) {
   if (Screen.checkError()) {
     return; // Do nothing if error present
   }
-  let operator = event.target.id;
   let num = +Screen.read();
   if (Calculator.currOperation) {
     // Chain operations by automatically executing partially-entered
@@ -218,12 +220,14 @@ function equalsButtonPress(_) {
 
 const clearButtons = document.querySelectorAll(".clear");
 clearButtons.forEach((clearButton) => {
-  clearButton.addEventListener("click", clearButtonPress);
+  clearButton.addEventListener("click", (event) => {
+    clearButtonPress(event.target.id);
+  });
 });
-function clearButtonPress(event) {
+function clearButtonPress(whichClear) {
   // Clear the screen
   Screen.clearScreen();
-  if (event.target.id == "C") {
+  if (whichClear == "C") {
     // Clear all
     Calculator.clear();
   }
@@ -249,3 +253,27 @@ function decimalAdd(_) {
     Screen.addDigit(".");
   }
 }
+
+// Add keyboard support
+const keys = {
+  "+": "add",
+  "-": "sub",
+  "*": "mul",
+  "/": "div",
+};
+document.addEventListener("keydown", (event) => {
+  if (!isNaN(event.key)) {
+    numButtonPress(+event.key);
+  } else if (event.key in keys) {
+    binaryOperatorButtonPress(keys[event.key]);
+  } else if (event.key === "=" || event.key === "Enter") {
+    equalsButtonPress();
+  } else if (event.key === ".") {
+    decimalAdd();
+  } else if (event.key === "Backspace") {
+    clearButtonPress("CE");
+  } else if (event.key === "c") {
+    clearButtonPress("C");
+  }
+  console.log(event.key);
+});
