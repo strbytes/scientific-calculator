@@ -1,0 +1,25 @@
+{
+  "name": "odin-calculator",
+  "version": "1.0.0",
+  "description": "Update to my calculator project for TOP, removing the old four-function calculator design entirely and adding in a simple interpreter for mathematical expressions inspired by the syntax used by Texas Instruments calculators. The overall design is specifically inspired by the TI-30XIIS.",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "serve": "webpack serve --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github-str:strbytes/odin-calculator.git"
+  },
+  "author": "strbytes",
+  "license": "ISC",
+  "devDependencies": {
+    "css-loader": "^6.7.1",
+    "html-webpack-plugin": "^5.5.0",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.11.0"
+  }
+}
