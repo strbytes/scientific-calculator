@@ -23,7 +23,7 @@ body {
   box-shadow: 5px 5px 5px grey;
 }
 
-#screen {
+#input-screen, #output-screen {
   height: 100px;
   background: #eee;
   border: 2px solid #999;
