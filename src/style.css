@@ -24,7 +24,7 @@ body {
 }
 
 #input-screen, #output-screen {
-  height: 100px;
+  height: 10vh;
   background: #eee;
   border: 2px solid #999;
   font-size: 72px;
@@ -41,22 +41,56 @@ body {
 }
 
 #controls {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+  display: grid;
+  grid-template-areas: 
+    "edit edit edit"
+    "left top right"
+    "left numbers right";
+  grid-template-columns: 12vh 36vh 12vh;
+  gap: 10px;
 }
 
-.button-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 5px;
+#edit {
+  grid-area: edit;
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+#left {
+  grid-area: left;
+}
+
+#top {
+  grid-area: top;
+}
+
+#right {
+  grid-area: right;
+}
+
+#numbers {
+  grid-area: numbers;
 }
 
 button {
-  height: 100px;
-  width: 100px;
+  position: relative;
+  height: 8vh;
+  width: 12vh;
   font-size: 24px;
   background-color: #e9e9ed;
+}
+
+button::before {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  content: attr(data-second);
+  font-size: 12px;
+  color: blue;
+}
+
+#second {
+ color: blue;
 }
 
 .binaryOperators {
