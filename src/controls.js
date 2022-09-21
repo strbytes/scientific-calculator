@@ -1,3 +1,4 @@
+/* List of all calculator controls, organized by section. */
 const controls = {
   edit: [
     {
@@ -106,22 +107,34 @@ const controls = {
   ]
 }
 
+/* Builds all of the calculator buttons and sections. */
 function buildControls() {
   const controlsDiv = document.querySelector("#controls");
   for (let section in controls) {
+    // controls is a global variable so just pass the name of each section.
+    // Attaches controls directly to the HTML node in index.
     controlsDiv.appendChild(buildSection(section));
   }
 }
 
+/* Build a section of the controls based on the section name. */
 function buildSection(section) {
   const sectionDiv = document.createElement("div");
   sectionDiv.id = section;
   for (let c of controls[section]) {
+    // id is only used for the '2nd' button, since 2nd is not a valid node ID
     sectionDiv.appendChild(makeButton(c.label, c.second, c.id));
   }
   return sectionDiv;
 }
 
+/**  
+ * Make a button out of the provided info.
+ * label - Used to create the visible text for the button as well as its ID.
+ * second - Stores the secondary command for the button in a data attribute.
+ * id - If present, use this for the id instead. For values where the label is 
+ * an illegal value for an ID.
+ */
 function makeButton(label, second, id) {
   let button = document.createElement("button");
   button.id = id? id : label;
