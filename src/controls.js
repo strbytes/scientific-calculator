@@ -139,10 +139,10 @@ function makeButton(control) {
   let button = document.createElement("button");
   button.id = control.value ? control.value : control.label;
   button.textContent = control.label;
-  button.dataset.secondaryLabel = control.second? control.second: "";
+  button.dataset.secondaryLabel = control.second ? control.second: "";
   button.dataset.secondaryValue = 
-    control.secondValue ? control.secondValue: 
-    control.second ? control.second: 
+    control.secondValue ? control.secondValue :
+    control.second ? control.second :
     control.value ? control.value : control.label;
   button.addEventListener("click", keyHandler);
   return button;

@@ -1,5 +1,6 @@
 html {
   font-family: monospace;
+  font-size: 1.8vh;
 }
 
 body {
@@ -27,7 +28,7 @@ body {
   height: 10vh;
   background: #eee;
   border: 2px solid #999;
-  font-size: 72px;
+  font-size: 3rem;
   padding: 0 10px;
   display: flex;
   justify-content: flex-end;
@@ -76,16 +77,16 @@ button {
   position: relative;
   height: 8vh;
   width: 12vh;
-  font-size: 24px;
+  font-size: 2rem;
   background-color: #e9e9ed;
 }
 
 button::before {
   position: absolute;
-  top: 5px;
-  left: 5px;
-  content: attr(data-second);
-  font-size: 12px;
+  top: .5vh;
+  left: .5vh;
+  content: attr(data-secondary-label);
+  font-size: 1rem;
   color: blue;
 }
 
