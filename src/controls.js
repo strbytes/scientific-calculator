@@ -3,29 +3,25 @@ const controls = {
   edit: [
     {
       label: "del",
-      second: ""
     },
     {
       label: "<-",
-      second: "",
-      id: "back"
+      value: "back",
     },
     {
       label: "->",
-      second: "",
-      id: "forward"
+      value: "forward",
     },
   ],
 
   left: [
     {
-      id: "second",
       label: "2nd",
-      second: ""
+      value: "second",
     },
     {
       label: "log",
-      second: "10^"
+      second: "10^",
     },
     {
       label: "ln",
@@ -37,73 +33,82 @@ const controls = {
     },
     {
       label: "^",
-      second: "x\u221A"
+      value: "exponent",
+      second: "x\u221A",
+      secondValue: "xrt"
     },
     {
       label: "x\u00B2",
-      second: "\u221A"
+      value: "square",
+      second: "\u221A",
+      secondValue: "sqrt"
     },
   ],
 
   top: [
     {
       label: "sin",
-      second: "sin\u207B"
+      second: "sin\u207B",
+      secondValue: "sin-",
     },
     {
       label: "cos",
-      second: "cos\u207B"
+      second: "cos\u207B",
+      secondValue: "cos-",
     },
     {
       label: "tan",
-      second: "tan\u207B"
+      second: "tan\u207B",
+      secondValue: "tan-",
     },
     {
       label: "x\u207B\u00B9",
-      second: "\u1D07"
+      value: "invert",
+      second: "\u1D07",
+      secondValue: "E"
     },
     {
       label: "(",
-      second: ""
+      value: "open-paren",
     },
     {
       label: ")",
-      second: ""
+      value: "close-paren",
     },
   ],
 
   right: [
     {
       label: "clear",
-      second: ""
     },
     {
       label: "/",
-      second: ""
+      value: "div",
     },
     {
       label: "*",
-      second: ""
+      value: "mul",
     },
     {
       label: "-",
-      second: ""
+      value: "sub",
     },
     {
       label: "+",
-      second: ""
+      value: "add",
     },
     {
       label: "=",
-      second: ""
+      value: "equals",
     },
   ],
 
   numbers: [
-    {label: "7", second: ""}, {label: "8", second: ""},{label: "9", second: ""},
-    {label: "4", second: ""}, {label: "5", second: ""},{label: "6", second: ""},
-    {label: "1", second: ""}, {label: "2", second: ""},{label: "3", second: ""},
-    {label: "-", second: ""}, {label: "0", second: ""},{label: ".", second: ""},
+    {label: "7"}, {label: "8"}, {label: "9"},
+    {label: "4"}, {label: "5"}, {label: "6"},
+    {label: "1"}, {label: "2"}, {label: "3"}, 
+    {label: "-", value: "negate", second: "ANS"}, 
+    {label: "0"}, {label: ".", value: "decimal"},
   ]
 }
 
@@ -122,31 +127,30 @@ function buildSection(section) {
   const sectionDiv = document.createElement("div");
   sectionDiv.id = section;
   for (let c of controls[section]) {
-    // id is only used for the '2nd' button, since 2nd is not a valid node ID
-    sectionDiv.appendChild(makeButton(c.label, c.second, c.id));
+    sectionDiv.appendChild(makeButton(c));
   }
   return sectionDiv;
 }
 
 /**  
- * Make a button out of the provided info.
- * label - Used to create the visible text for the button as well as its ID.
- * second - Stores the secondary command for the button in a data attribute.
- * id - If present, use this for the id instead. For values where the label is 
- * an illegal value for an ID.
+ * Make a button out of a control object.
  */
-function makeButton(label, second, id) {
+function makeButton(control) {
   let button = document.createElement("button");
-  button.id = id? id : label;
-  button.textContent = label;
-  button.dataset.second = second;
+  button.id = control.value ? control.value : control.label;
+  button.textContent = control.label;
+  button.dataset.secondaryLabel = control.second? control.second: "";
+  button.dataset.secondaryValue = 
+    control.secondValue ? control.secondValue: 
+    control.second ? control.second: 
+    control.value ? control.value : control.label;
   button.addEventListener("click", keyHandler);
   return button;
 }
 
 function keyHandler(e) {
   // TODO implement buffer
-  buffer.append(e.target.id)
+  console.log(e.target.id + " " + e.target.dataset.secondaryValue);
 }
 
 export default buildControls;
