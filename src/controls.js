@@ -6,11 +6,11 @@ const controls = {
     },
     {
       label: "<-",
-      value: "back",
+      value: "left",
     },
     {
       label: "->",
-      value: "forward",
+      value: "right",
     },
   ],
 
@@ -112,45 +112,45 @@ const controls = {
   ]
 }
 
-/* Builds all of the calculator buttons and sections. */
-function buildControls() {
-  const controlsDiv = document.querySelector("#controls");
-  for (let section in controls) {
-    // controls is a global variable so just pass the name of each section.
-    // Attaches controls directly to the HTML node in index.
-    controlsDiv.appendChild(buildSection(section));
+function ControlBuilder(calc) {
+
+  /* Builds all of the calculator buttons and sections. */
+  function buildControls() {
+    const controlsDiv = document.querySelector("#controls");
+    for (let section in controls) {
+      // controls is a global variable so just pass the name of each section.
+      // Attaches controls directly to the HTML node in index.
+      controlsDiv.appendChild(buildSection(section));
+    }
   }
-}
 
-/* Build a section of the controls based on the section name. */
-function buildSection(section) {
-  const sectionDiv = document.createElement("div");
-  sectionDiv.id = section;
-  for (let c of controls[section]) {
-    sectionDiv.appendChild(makeButton(c));
+  /* Build a section of the controls based on the section name. */
+  function buildSection(section) {
+    const sectionDiv = document.createElement("div");
+    sectionDiv.id = section;
+    for (let c of controls[section]) {
+      sectionDiv.appendChild(makeButton(c));
+    }
+    return sectionDiv;
   }
-  return sectionDiv;
+
+  /**  
+   * Make a button out of a control object.
+   */
+  function makeButton(control) {
+    let button = document.createElement("button");
+    button.id = control.value ? control.value : control.label;
+    button.textContent = control.label;
+    button.dataset.secondaryLabel = control.second ? control.second: "";
+    button.dataset.secondaryValue = 
+      control.secondValue ? control.secondValue :
+      control.second ? control.second :
+      control.value ? control.value : control.label;
+    button.addEventListener("click", calc.keyHandler.bind(calc));
+    return button;
+  }
+  
+  buildControls();
 }
 
-/**  
- * Make a button out of a control object.
- */
-function makeButton(control) {
-  let button = document.createElement("button");
-  button.id = control.value ? control.value : control.label;
-  button.textContent = control.label;
-  button.dataset.secondaryLabel = control.second ? control.second: "";
-  button.dataset.secondaryValue = 
-    control.secondValue ? control.secondValue :
-    control.second ? control.second :
-    control.value ? control.value : control.label;
-  button.addEventListener("click", keyHandler);
-  return button;
-}
-
-function keyHandler(e) {
-  // TODO implement buffer
-  console.log(e.target.id + " " + e.target.dataset.secondaryValue);
-}
-
-export default buildControls;
+export default ControlBuilder;

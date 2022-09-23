@@ -1,5 +1,7 @@
-import buildControls from './controls.js';
+import Calculator from './calc/calc.js';
+import ControlBuilder from './controls.js';
 import './reset.css';
 import './style.css';
 
-buildControls();
+const Calc = new Calculator();
+ControlBuilder(Calc);
