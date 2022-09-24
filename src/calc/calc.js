@@ -6,7 +6,7 @@ class Calculator {
     #outputScreen = document.querySelector("#output-screen");
     #second = false;
     #specialKeys = {
-        "equals": this.evaluate,
+        "equals": this.evaluate.bind(this),
         "clear": this.#buffer.clear.bind(this.#buffer),
         "del": this.#buffer.del.bind(this.#buffer),
         "left": this.#buffer.left.bind(this.#buffer),
@@ -18,7 +18,7 @@ class Calculator {
         this.#inputScreen.innerHTML = this.#buffer.toString();
     }
 
-    evaluate(b) {
+    evaluate() {
         // TODO
     }
 
@@ -47,6 +47,7 @@ class Calculator {
         }
 
         this.#inputScreen.innerHTML = this.#buffer.toString();
+        
     }
 }
 export default Calculator;
