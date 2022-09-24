@@ -21,11 +21,19 @@ const controls = {
     },
     {
       label: "log",
+      value: "log(",
+      buffer: "log(",
       second: "10^",
+      secondBuffer: "10^(",
+      secondValue: "10^(",
     },
     {
       label: "ln",
-      second: "e^"
+      value: "ln(",
+      buffer: "ln(",
+      second: "e^",
+      secondBuffer: "e^(",
+      secondValue: "e^(",
     },
     {
       label: "\u03c0",
@@ -34,17 +42,16 @@ const controls = {
     },
     {
       label: "^",
-      value: "exponent",
       second: "\u02E3\u221A",
-      secondValue: "xrt",
+      secondValue: "xrt(",
       secondBuffer: "\u02E3\u221A("
     },
     {
       label: "x\u00B2",
-      value: "square",
+      value: "squared",
       buffer: "\u00B2",
       second: "\u221A",
-      secondValue: "sqrt",
+      secondValue: "sqrt(",
       secondBuffer: "\u221A("
     },
   ],
@@ -52,39 +59,40 @@ const controls = {
   top: [
     {
       label: "sin",
+      value: "sin(",
       buffer: "sin(",
       second: "sin\u207B",
-      secondValue: "sin-",
+      secondValue: "sin-(",
       secondBuffer: "sin\u207B("
     },
     {
       label: "cos",
+      value: "cos(",
       buffer: "cos(",
       second: "cos\u207B",
-      secondValue: "cos-",
+      secondValue: "cos-(",
       secondBuffer: "cos\u207B("
     },
     {
       label: "tan",
+      value: "tan(",
       buffer: "tan(",
       second: "tan\u207B",
-      secondValue: "tan-",
+      secondValue: "tan-(",
       secondBuffer: "tan\u207B(",
     },
     {
       label: "x\u207B\u00B9",
-      value: "invert",
+      value: "inverted",
       buffer: "\u207B\u00B9",
       second: "\u1D07",
       secondValue: "E"
     },
     {
       label: "(",
-      value: "open-paren",
     },
     {
       label: ")",
-      value: "close-paren",
     },
   ],
 
@@ -94,19 +102,16 @@ const controls = {
     },
     {
       label: "/",
-      value: "div",
     },
     {
       label: "*",
-      value: "mul",
     },
     {
-      label: "-",
-      value: "sub",
+      label: "\uFE63",
+      value: "-"
     },
     {
       label: "+",
-      value: "add",
     },
     {
       label: "=",
@@ -118,8 +123,8 @@ const controls = {
     {label: "7"}, {label: "8"}, {label: "9"},
     {label: "4"}, {label: "5"}, {label: "6"},
     {label: "1"}, {label: "2"}, {label: "3"}, 
-    {label: "-", value: "negate", second: "ANS"}, 
-    {label: "0"}, {label: ".", value: "decimal"},
+    {label: "\u002D", value: "negate", second: "ANS"}, 
+    {label: "0"}, {label: "."},
   ]
 }
 
