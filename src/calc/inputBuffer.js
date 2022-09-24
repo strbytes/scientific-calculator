@@ -52,8 +52,16 @@ class InputBuffer {
       }
     }
     
-
     return stringBuilder.join("");
+  }
+  
+  [Symbol.iterator]() {
+    let index = -1;
+    let tokens = this.#tokens;
+    
+    return {
+      next: () => ({ value: tokens[++index], done: !(index in tokens) })
+    };
   }
 }
 
