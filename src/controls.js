@@ -36,32 +36,40 @@ const controls = {
       label: "^",
       value: "exponent",
       second: "\u02E3\u221A",
-      secondValue: "xrt"
+      secondValue: "xrt",
+      secondBuffer: "\u02E3\u221A("
     },
     {
       label: "x\u00B2",
       value: "square",
       buffer: "\u00B2",
       second: "\u221A",
-      secondValue: "sqrt"
+      secondValue: "sqrt",
+      secondBuffer: "\u221A("
     },
   ],
 
   top: [
     {
       label: "sin",
+      buffer: "sin(",
       second: "sin\u207B",
       secondValue: "sin-",
+      secondBuffer: "sin\u207B("
     },
     {
       label: "cos",
+      buffer: "cos(",
       second: "cos\u207B",
       secondValue: "cos-",
+      secondBuffer: "cos\u207B("
     },
     {
       label: "tan",
+      buffer: "tan(",
       second: "tan\u207B",
       secondValue: "tan-",
+      secondBuffer: "tan\u207B(",
     },
     {
       label: "x\u207B\u00B9",
@@ -150,6 +158,8 @@ function ControlBuilder(calc) {
       control.secondValue ? control.secondValue :
       control.second ? control.second :
       control.value ? control.value : control.label;
+    button.dataset.secondBuffer = 
+      control.secondBuffer ? control.secondBuffer : "";
     button.addEventListener("click", calc.keyHandler.bind(calc));
     return button;
   }

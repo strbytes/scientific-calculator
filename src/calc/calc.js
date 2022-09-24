@@ -13,8 +13,6 @@ class Calculator {
         "right": this.#buffer.right.bind(this.#buffer),
         "second": _ => this.#second = this.#second? false : true,
     };
-    functions = 
-        ["log", "ln", "sin", "cos", "tan", "sin-", "cos-", "tan-", "sqrt", "xrt"];
     
     constructor() {
         this.#inputScreen.innerHTML = this.#buffer.toString();
@@ -39,18 +37,16 @@ class Calculator {
             this.#specialKeys[keyValue]();
         } else {
             this.#buffer.add(keyValue, keySymbol);
-            if (this.functions.includes(keyValue)) {
-                this.#buffer.add("open-paren", "(");
-            }
         }
-        if (keyValue !== "second") this.#second = false;
 
-        this.#inputScreen.innerHTML = this.#buffer.toString();
+        if (keyValue !== "second") this.#second = false;
         if (this.#second) {
             this.#inputScreen.classList.add("second");
         } else {
             this.#inputScreen.classList.remove("second");
         }
+
+        this.#inputScreen.innerHTML = this.#buffer.toString();
     }
 }
 export default Calculator;
