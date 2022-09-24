@@ -28,18 +28,20 @@ const controls = {
       second: "e^"
     },
     {
-      label: "pi",
+      label: "\u03c0",
+      value: "pi",
       second: "e"
     },
     {
       label: "^",
       value: "exponent",
-      second: "x\u221A",
+      second: "\u02E3\u221A",
       secondValue: "xrt"
     },
     {
       label: "x\u00B2",
       value: "square",
+      buffer: "\u00B2",
       second: "\u221A",
       secondValue: "sqrt"
     },
@@ -64,6 +66,7 @@ const controls = {
     {
       label: "x\u207B\u00B9",
       value: "invert",
+      buffer: "\u207B\u00B9",
       second: "\u1D07",
       secondValue: "E"
     },
@@ -141,8 +144,9 @@ function ControlBuilder(calc) {
     let button = document.createElement("button");
     button.id = control.value ? control.value : control.label;
     button.textContent = control.label;
-    button.dataset.secondaryLabel = control.second ? control.second: "";
-    button.dataset.secondaryValue = 
+    button.dataset.buffer = control.buffer ? control.buffer : "";
+    button.dataset.secondLabel = control.second ? control.second: "";
+    button.dataset.secondValue = 
       control.secondValue ? control.secondValue :
       control.second ? control.second :
       control.value ? control.value : control.label;

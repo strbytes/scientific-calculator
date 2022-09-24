@@ -3,28 +3,30 @@
  * like interface for accessing them.
  */ 
 class InputBuffer {
-  #tokens;
+  #tokens = [];
+  #displayTokens = [];
   #index = 0;
   #cursor = 0;
 
-  constructor(tokens) {
-    this.#tokens = tokens ? tokens : [];
+  constructor() {
     this.#cursor = this.#tokens.length;
   }
 
-  add(token) {
+  add(token, display) {
     this.#tokens.push(token);
+    this.#displayTokens.push(display ? display : token);
     this.#cursor += 1;
   }
   
   clear() {
     this.#tokens = [];
+    this.#displayTokens = [];
     this.#cursor = 0;
   }
 
   del() {
     if (this.#tokens.length !== 0) {
-      this.#tokens.splice(cursor, 1);
+      this.#tokens.splice(this.#cursor, 1);
       if (this.#cursor === this.#tokens.length) {
         this.#cursor -= 1;
       }
@@ -76,8 +78,8 @@ class InputBuffer {
 
   toString() {
     let stringBuilder = [];
-    for (let i = 0; i < this.#tokens.length; i ++) {
-      stringBuilder.push(this.#tokens[i]);
+    for (let i = 0; i < this.#displayTokens.length; i ++) {
+      stringBuilder.push(this.#displayTokens[i]);
     }
     return stringBuilder.join("");
   }

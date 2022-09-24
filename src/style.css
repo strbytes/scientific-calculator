@@ -85,7 +85,7 @@ button::before {
   position: absolute;
   top: .5vh;
   left: .5vh;
-  content: attr(data-secondary-label);
+  content: attr(data-second-label);
   font-size: 1rem;
   color: blue;
 }
