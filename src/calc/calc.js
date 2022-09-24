@@ -15,6 +15,10 @@ class Calculator {
     };
     functions = 
         ["log", "ln", "sin", "cos", "tan", "sin-", "cos-", "tan-", "sqrt", "xrt"];
+    
+    constructor() {
+        this.#inputScreen.innerHTML = this.#buffer.toString();
+    }
 
     evaluate(b) {
         // TODO
@@ -41,7 +45,7 @@ class Calculator {
         }
         if (keyValue !== "second") this.#second = false;
 
-        this.#inputScreen.textContent = this.#buffer.toString();
+        this.#inputScreen.innerHTML = this.#buffer.toString();
     }
 }
 export default Calculator;

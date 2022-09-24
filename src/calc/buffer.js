@@ -8,13 +8,9 @@ class InputBuffer {
   #index = 0;
   #cursor = 0;
 
-  constructor() {
-    this.#cursor = this.#tokens.length;
-  }
-
   add(token, display) {
-    this.#tokens.push(token);
-    this.#displayTokens.push(display ? display : token);
+    this.#tokens.splice(this.#cursor, 0, token);
+    this.#displayTokens.splice(this.#cursor, 0, display ? display : token);
     this.#cursor += 1;
   }
   
@@ -27,6 +23,7 @@ class InputBuffer {
   del() {
     if (this.#tokens.length !== 0) {
       this.#tokens.splice(this.#cursor, 1);
+      this.#displayTokens.splice(this.#cursor, 1);
       if (this.#cursor === this.#tokens.length) {
         this.#cursor -= 1;
       }
@@ -56,6 +53,7 @@ class InputBuffer {
   get current() {
     return this.#tokens[this.#index];
   }
+
   /**
    * Returns the next token in the buffer. Undefined response indicates end of 
    * buffer.
@@ -63,6 +61,7 @@ class InputBuffer {
   get next() {
     return this.#tokens[this.#index + 1];
   }
+
   /**
    * Returns the next token in the buffer and advances the index. WIll throw
    * an exception if called past the end of the buffer.
@@ -78,9 +77,16 @@ class InputBuffer {
 
   toString() {
     let stringBuilder = [];
-    for (let i = 0; i < this.#displayTokens.length; i ++) {
-      stringBuilder.push(this.#displayTokens[i]);
+    for (let i = 0; i <= this.#displayTokens.length; i++) {
+      let token = this.#displayTokens[i] ? this.#displayTokens[i] : "&nbsp";
+      if (i === this.#cursor) {
+          stringBuilder.push(`<span id='cursor'>${token}</span>`);
+      } else {
+        stringBuilder.push(token);
+      }
     }
+    
+
     return stringBuilder.join("");
   }
 }

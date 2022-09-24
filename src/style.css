@@ -35,6 +35,17 @@ body {
   align-items: center;
 }
 
+#cursor {
+  background-color: darkgrey;
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  0% {
+    background-color: grey;
+  }
+}
+
 #logo {
   text-align: right;
   font-style: italic;
