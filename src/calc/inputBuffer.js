@@ -1,11 +1,6 @@
-/**
- * Stores a series of tokens to be used by the parser, and provides a queue-
- * like interface for accessing them.
- */ 
 class InputBuffer {
   #tokens = [];
   #displayTokens = [];
-  #index = 0;
   #cursor = 0;
 
   add(token, display) {
@@ -13,7 +8,7 @@ class InputBuffer {
     this.#displayTokens.splice(this.#cursor, 0, display ? display : token);
     this.#cursor += 1;
   }
-  
+ 
   clear() {
     this.#tokens = [];
     this.#displayTokens = [];
@@ -41,38 +36,9 @@ class InputBuffer {
       this.#cursor += 1;
     }
   }
-  
+
   get cursor() {
     return this.#cursor;
-  }
-
-  /**
-   * Returns the current token in the buffer. Undefined response indicates end 
-   * of buffer.
-   */
-  get current() {
-    return this.#tokens[this.#index];
-  }
-
-  /**
-   * Returns the next token in the buffer. Undefined response indicates end of 
-   * buffer.
-   */
-  get next() {
-    return this.#tokens[this.#index + 1];
-  }
-
-  /**
-   * Returns the next token in the buffer and advances the index. WIll throw
-   * an exception if called past the end of the buffer.
-   */
-  pop() {
-    if (this.#index == this.#tokens.length) {
-      throw "Reached end of buffer";
-    }
-    let token = this.current;
-    this.#index += 1;
-    return token;
   }
 
   toString() {

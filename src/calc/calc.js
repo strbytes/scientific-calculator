@@ -1,4 +1,4 @@
-import InputBuffer from './buffer.js';
+import InputBuffer from './inputBuffer.js';
 
 class Calculator {
     #buffer = new InputBuffer();
