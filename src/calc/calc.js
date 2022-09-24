@@ -1,4 +1,5 @@
 import InputBuffer from './inputBuffer.js';
+import TokenBuffer from './tokenBuffer.js';
 
 class Calculator {
     #buffer = new InputBuffer();
@@ -20,6 +21,7 @@ class Calculator {
 
     evaluate() {
         // TODO
+        let tokens = new TokenBuffer(this.#buffer);
     }
 
     keyHandler(e) {

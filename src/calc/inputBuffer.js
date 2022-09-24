@@ -40,6 +40,10 @@ class InputBuffer {
   get cursor() {
     return this.#cursor;
   }
+  
+  length() {
+    return this.#tokens.length;
+  }
 
   toString() {
     let stringBuilder = [];
