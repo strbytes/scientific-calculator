@@ -46,6 +46,11 @@ class Calculator {
         if (keyValue !== "second") this.#second = false;
 
         this.#inputScreen.innerHTML = this.#buffer.toString();
+        if (this.#second) {
+            this.#inputScreen.classList.add("second");
+        } else {
+            this.#inputScreen.classList.remove("second");
+        }
     }
 }
 export default Calculator;

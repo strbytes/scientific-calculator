@@ -25,6 +25,7 @@ body {
 }
 
 #input-screen, #output-screen {
+  position: relative;
   height: 10vh;
   background: #eee;
   border: 2px solid #999;
@@ -33,6 +34,14 @@ body {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+}
+
+.second::before {
+  content: "2nd";
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  font-size: 1rem;
 }
 
 #cursor {
