@@ -45,13 +45,12 @@ body {
 }
 
 #cursor {
-  background-color: darkgrey;
-  animation: blinker 1s linear infinite;
+  animation: blinker 1s step-start infinite;
 }
 
 @keyframes blinker {
-  0% {
-    background-color: grey;
+  50% {
+    background-color: darkgrey;
   }
 }
 
