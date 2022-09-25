@@ -32,10 +32,6 @@ class TokenBuffer {
       let number = parseFloat(numberBuilder.join(""));
       this.#tokens.push(number);
     }
-    
-    for (let t of this.#tokens) {
-      console.log(t);
-    }
   }
   
   /**

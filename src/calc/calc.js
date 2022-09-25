@@ -1,5 +1,6 @@
 import InputBuffer from './inputBuffer.js';
 import TokenBuffer from './tokenBuffer.js';
+import parser from './parser.js';
 
 class Calculator {
     #buffer = new InputBuffer();
@@ -20,8 +21,12 @@ class Calculator {
     }
 
     evaluate() {
-        // TODO
         let tokens = new TokenBuffer(this.#buffer);
+        let AST = parser(tokens);
+        this.#outputScreen.textContent = (AST.eval());
+        // TODO set up screen clearing
+            // clear when entering a new expression after evaluation
+            // clear output on clear
     }
 
     keyHandler(e) {
