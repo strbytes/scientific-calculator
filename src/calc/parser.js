@@ -47,11 +47,12 @@ function exponent(source) {
 // TODO xrt special case?
 
 function callExpr(source) {
-  // if (is_name(source.current) && source.next === "(") {
-  // TODO this fails on literals bc they are ints not strings
   if (is_call(source.current)) {
     let operator = source.pop().slice(0, -1);
     let operand = literal(source);
+    if (source.current === ")") {
+      source.pop();
+    }
     return new CallExpr(operator, operand);
   }
   return literal(source);
