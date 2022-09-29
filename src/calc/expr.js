@@ -6,9 +6,10 @@ const Globals = {
   "*": (x, y) => x * y,
   "/": (x, y) => x / y,
   "^": Math.pow,
-  "log": Math.log,
+  "log": Math.log10,
+  "ln": Math.log,
   "sqrt": Math.sqrt,
-  "neg": (x) => -x,
+  "negate": (x) => -x,
   "pi": Math.PI,
   "e": Math.E,
 }
