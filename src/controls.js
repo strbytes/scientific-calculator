@@ -25,7 +25,7 @@ const controls = {
       buffer: "log(",
       second: "10^",
       secondBuffer: "10^(",
-      secondValue: "10^(",
+      secondValue: "tenPow(",
     },
     {
       label: "ln",
@@ -33,7 +33,7 @@ const controls = {
       buffer: "ln(",
       second: "e^",
       secondBuffer: "e^(",
-      secondValue: "e^(",
+      secondValue: "ePow(",
     },
     {
       label: "\u03c0",
@@ -62,7 +62,7 @@ const controls = {
       value: "sin(",
       buffer: "sin(",
       second: "sin\u207B",
-      secondValue: "sin-(",
+      secondValue: "asin(",
       secondBuffer: "sin\u207B("
     },
     {
@@ -70,7 +70,7 @@ const controls = {
       value: "cos(",
       buffer: "cos(",
       second: "cos\u207B",
-      secondValue: "cos-(",
+      secondValue: "acos(",
       secondBuffer: "cos\u207B("
     },
     {
@@ -78,12 +78,12 @@ const controls = {
       value: "tan(",
       buffer: "tan(",
       second: "tan\u207B",
-      secondValue: "tan-(",
+      secondValue: "atan(",
       secondBuffer: "tan\u207B(",
     },
     {
       label: "x\u207B\u00B9",
-      value: "inverted",
+      value: "invert",
       buffer: "\u207B\u00B9",
       second: "\u1D07",
       secondValue: "E"
