@@ -55,9 +55,23 @@ function unary(source) {
     let operand = callExpr(source);
     return new CallExpr(operator, operand);
   }
-  return callExpr(source);
+  return postfix(source);
 }
-// TODO xrt special case?
+
+function postfix(source) {
+  let expression = callExpr(source);
+  while (is_postfix(source.current)) {
+    let operator = source.pop().slice(1);
+    if (is_call(operator)) {
+      operator = operator.slice(0, -1);
+      let right = parser(source);
+      expression = new BinaryExpr(expression, operator, right);
+    } else {
+      expression = new CallExpr(operator, expression)
+    }
+  }
+  return expression;
+}
 
 function callExpr(source) {
   if (is_call(source.current)) {
@@ -105,7 +119,7 @@ function is_call(token) {
 }
 
 function is_postfix(token) {
-  return token ? /^\)[a-zA-Z]+$/.test(token) : false;
+  return token ? /^\)[a-zA-Z]+\(?$/.test(token) : false;
 }
 
 module.exports = parser;

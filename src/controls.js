@@ -43,7 +43,7 @@ const controls = {
     {
       label: "^",
       second: "\u02E3\u221A",
-      secondValue: "xrt(",
+      secondValue: ")xrt(",
       secondBuffer: "\u02E3\u221A("
     },
     {
