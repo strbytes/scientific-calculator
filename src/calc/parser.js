@@ -7,7 +7,7 @@ const Literal = require("./expr").Literal;
  */
 const Terms = ["+", "-"];
 const Factors = ["*", "/", ")E("];
-const Exponents = ["^"];
+const Exponents = ["^", ")squared", ")inverted"];
 const Unary = ["negate"];
 const Delimiters = ["(", ")"];
 
@@ -37,9 +37,14 @@ function factor(source) {
 function exponent(source) {
   let expression = unary(source);
   while (Exponents.includes(source.current)) {
-    let operator = source.pop();
-    let right = unary(source);
-    expression = new BinaryExpr(expression, operator, right);
+    if (is_postfix(source.current)) {
+      let operator = source.pop();
+      expression = new CallExpr(operator, expression);
+    } else {
+      let operator = source.pop();
+      let right = unary(source);
+      expression = new BinaryExpr(expression, operator, right);
+    }
   }
   return expression;  
 }
@@ -97,6 +102,10 @@ function is_name(token) {
 
 function is_call(token) {
   return token ? /^[a-zA-Z]+\($/.test(token) : false;
+}
+
+function is_postfix(token) {
+  return token ? /^\)[a-zA-Z]+$/.test(token) : false;
 }
 
 module.exports = parser;

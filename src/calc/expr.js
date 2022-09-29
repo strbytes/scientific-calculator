@@ -1,4 +1,5 @@
 const Globals = {
+  // Symbols in names prevent special operations from being interpreted twice.
   "log": Math.log10,
   "tenPow": (x) => 10 ** x,
   "ln": Math.log,
@@ -8,14 +9,14 @@ const Globals = {
   "^": Math.pow,
   "xrt": null, // TODO
   "sqrt": Math.sqrt,
-  "squared": (x) => x ** 2,
+  ")squared": (x) => x ** 2,
   "sin": Math.sin,
   "asin": Math.asin,
   "cos": Math.cos,
   "acos": Math.acos,
   "tan": Math.tan,
   "atan": Math.atan,
-  "inverted": (x) => x ** -1,
+  ")inverted": (x) => x ** -1,
   ")E(": (x, y) => x * 10 ** y,
   "negate": (x) => -x,
   "+": (x, y) => x + y,

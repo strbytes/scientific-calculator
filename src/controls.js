@@ -48,7 +48,7 @@ const controls = {
     },
     {
       label: "x\u00B2",
-      value: "squared",
+      value: ")squared",
       buffer: "\u00B2",
       second: "\u221A",
       secondValue: "sqrt(",
@@ -83,7 +83,7 @@ const controls = {
     },
     {
       label: "x\u207B\u00B9",
-      value: "inverted",
+      value: ")inverted",
       buffer: "\u207B\u00B9",
       second: "\u1D07",
       secondValue: ")E("
