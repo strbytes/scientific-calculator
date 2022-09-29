@@ -6,6 +6,7 @@ class Calculator {
     #buffer = new InputBuffer();
     #clear = false;
     #clearOutput = false;
+    #insert = false;
     #inputScreen = document.querySelector("#input-screen");
     #outputScreen = document.querySelector("#output-screen");
     #second = false;
@@ -22,6 +23,7 @@ class Calculator {
             }
         }).bind(this),
         "del": this.#buffer.del.bind(this.#buffer),
+        "ins": _ => this.#insert = this.#insert ? false: true,
         "left": this.#buffer.left.bind(this.#buffer),
         "right": this.#buffer.right.bind(this.#buffer),
         "second": _ => this.#second = this.#second? false : true,
@@ -54,6 +56,9 @@ class Calculator {
 
         if (this.#specialKeys.hasOwnProperty(keyValue)) {
             this.#specialKeys[keyValue]();
+        } else if (this.#insert) {
+            this.#buffer.insert(keyValue, keySymbol);
+            this.#insert = false;
         } else {
             this.#buffer.add(keyValue, keySymbol);
         }

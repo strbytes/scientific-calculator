@@ -3,6 +3,7 @@ const controls = {
   edit: [
     {
       label: "del",
+      second:"ins"
     },
     {
       label: "<-",

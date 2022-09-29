@@ -8,7 +8,7 @@ class InputBuffer {
     this.#displayTokens.splice(this.#cursor, 0, display ? display : token);
     this.#cursor += 1;
   }
- 
+
   clear() {
     this.#tokens = [];
     this.#displayTokens = [];
@@ -23,6 +23,11 @@ class InputBuffer {
         this.#cursor -= 1;
       }
     }
+  }
+  
+  insert(token, display) {
+    this.#tokens.splice(this.#cursor, 1, token);
+    this.#displayTokens.splice(this.#cursor, 1, display ? display : token);
   }
 
   left() {
@@ -40,7 +45,7 @@ class InputBuffer {
   get cursor() {
     return this.#cursor;
   }
-  
+
   length() {
     return this.#tokens.length;
   }
@@ -55,14 +60,14 @@ class InputBuffer {
         stringBuilder.push(token);
       }
     }
-    
+
     return stringBuilder.join("");
   }
-  
+
   [Symbol.iterator]() {
     let index = -1;
     let tokens = this.#tokens;
-    
+
     return {
       next: () => ({ value: tokens[++index], done: !(index in tokens) })
     };
