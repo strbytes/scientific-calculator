@@ -6,7 +6,7 @@ const Literal = require("./expr").Literal;
  * Built-in operators.
  */
 const Terms = ["+", "-"];
-const Factors = ["*", "/"];
+const Factors = ["*", "/", ")E("];
 const Exponents = ["^"];
 const Unary = ["negate"];
 const Delimiters = ["(", ")"];

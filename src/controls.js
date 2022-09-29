@@ -83,10 +83,10 @@ const controls = {
     },
     {
       label: "x\u207B\u00B9",
-      value: "invert",
+      value: "inverted",
       buffer: "\u207B\u00B9",
       second: "\u1D07",
-      secondValue: "E"
+      secondValue: ")E("
     },
     {
       label: "(",

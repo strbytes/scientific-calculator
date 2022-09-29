@@ -16,7 +16,7 @@ const Globals = {
   "tan": Math.tan,
   "atan": Math.atan,
   "inverted": (x) => x ** -1,
-  "E": (x, y) => x * 10 ** y,
+  ")E(": (x, y) => x * 10 ** y,
   "negate": (x) => -x,
   "+": (x, y) => x + y,
   "-": (x, y) => x - y,
