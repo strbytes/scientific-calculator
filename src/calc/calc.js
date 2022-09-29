@@ -4,12 +4,23 @@ import parser from './parser.js';
 
 class Calculator {
     #buffer = new InputBuffer();
+    #clear = false;
+    #clearOutput = false;
     #inputScreen = document.querySelector("#input-screen");
     #outputScreen = document.querySelector("#output-screen");
     #second = false;
     #specialKeys = {
         "equals": this.evaluate.bind(this),
-        "clear": this.#buffer.clear.bind(this.#buffer),
+        "clear": (_ => {
+            this.#buffer.clear();
+            this.#clear = false;
+            if (this.#clearOutput) {
+                this.#outputScreen.textContent = "";
+                this.#clearOutput = false;
+            } else {
+                this.#clearOutput = true;
+            }
+        }).bind(this),
         "del": this.#buffer.del.bind(this.#buffer),
         "left": this.#buffer.left.bind(this.#buffer),
         "right": this.#buffer.right.bind(this.#buffer),
@@ -24,13 +35,14 @@ class Calculator {
         let tokens = new TokenBuffer(this.#buffer);
         let AST = parser(tokens);
         this.#outputScreen.textContent = (AST.eval());
-        // TODO set up screen clearing
-            // clear when entering a new expression after evaluation
-            // clear output on clear
+        this.#clear = true;
     }
 
     keyHandler(e) {
         let key = e.target;
+        if (this.#clear) {
+            this.#specialKeys["clear"]();
+        }
         let keyValue, keySymbol;
         if (this.#second) {
             keyValue = key.dataset.secondValue || key.id;
