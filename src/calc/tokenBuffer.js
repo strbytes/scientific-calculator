@@ -5,7 +5,7 @@
 class TokenBuffer {
   #tokens;
   #index = 0;
-  
+
   constructor(inputBuffer) {
     this.#tokens = [];
 
@@ -24,7 +24,7 @@ class TokenBuffer {
         this.#tokens.push(t);
       }
     }
-    
+
     // Last tokens are a number
     if (numberBuilder.length > 0) {
       // TODO how to handle bad inputs
@@ -33,7 +33,7 @@ class TokenBuffer {
       this.#tokens.push(number);
     }
   }
-  
+
   /**
    * Returns the current token in the buffer. Undefined response indicates end 
    * of buffer.
@@ -62,7 +62,7 @@ class TokenBuffer {
     this.#index += 1;
     return token;
   }
-  
+
   toString() {
     let stringBuilder = [];
     for (let i = 0; i < this.#tokens.length; i ++) {
