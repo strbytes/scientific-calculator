@@ -1,17 +1,27 @@
 const Globals = {
-  // TODO fill out rest of functions
-  // TODO xrt special case?
+  "log": Math.log10,
+  "tenPow": (x) => 10 ** x,
+  "ln": Math.log,
+  "ePow": (x) => Math.E ** x,
+  "pi": Math.PI,
+  "e": Math.E,
+  "^": Math.pow,
+  "xrt": null, // TODO
+  "sqrt": Math.sqrt,
+  "squared": (x) => x ** 2,
+  "sin": Math.sin,
+  "asin": Math.asin,
+  "cos": Math.cos,
+  "acos": Math.acos,
+  "tan": Math.tan,
+  "atan": Math.atan,
+  "inverted": (x) => x ** -1,
+  "E": (x, y) => x * 10 ** y,
+  "negate": (x) => -x,
   "+": (x, y) => x + y,
   "-": (x, y) => x - y,
   "*": (x, y) => x * y,
   "/": (x, y) => x / y,
-  "^": Math.pow,
-  "log": Math.log10,
-  "ln": Math.log,
-  "sqrt": Math.sqrt,
-  "negate": (x) => -x,
-  "pi": Math.PI,
-  "e": Math.E,
 }
 
 class Expression {
