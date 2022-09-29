@@ -8,6 +8,7 @@ const Literal = require("./expr").Literal;
 const Terms = ["+", "-"];
 const Factors = ["*", "/"];
 const Exponents = ["^"];
+const Unary = ["negate"];
 const Delimiters = ["(", ")"];
 
 /*
@@ -34,22 +35,29 @@ function factor(source) {
 }
 
 function exponent(source) {
-  let expression = callExpr(source);
+  let expression = unary(source);
   while (Exponents.includes(source.current)) {
     let operator = source.pop();
-    let right = callExpr(source);
+    let right = unary(source);
     expression = new BinaryExpr(expression, operator, right);
   }
   return expression;  
 }
 
-// TODO handle unary expressions without parens (negate)
+function unary(source) {
+  if (Unary.includes(source.current)) {
+    let operator = source.pop();
+    let operand = callExpr(source);
+    return new CallExpr(operator, operand);
+  }
+  return callExpr(source);
+}
 // TODO xrt special case?
 
 function callExpr(source) {
   if (is_call(source.current)) {
     let operator = source.pop().slice(0, -1);
-    let operand = literal(source);
+    let operand = parser(source);
     if (source.current === ")") {
       source.pop();
     }
