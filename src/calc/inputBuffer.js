@@ -16,12 +16,12 @@ class InputBuffer {
   }
 
   del() {
-    if (this.#tokens.length !== 0) {
+    if (this.#tokens.length !== 0 && this.#cursor !== this.#tokens.length) {
       this.#tokens.splice(this.#cursor, 1);
       this.#displayTokens.splice(this.#cursor, 1);
-      if (this.#cursor === this.#tokens.length) {
-        this.#cursor -= 1;
-      }
+      // if (this.#cursor === this.#tokens.length) {
+      //   this.#cursor -= 1;
+      // }
     }
   }
   
