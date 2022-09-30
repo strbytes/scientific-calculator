@@ -85,6 +85,15 @@ class Calculator {
         } else {
             this.#inputScreen.classList.remove("second");
         }
+        
+        if (this.#insert && ["clear", "del"].includes(keyValue)) {
+            this.#insert = false;
+        }
+        if (this.#insert) {
+            this.#inputScreen.classList.add("insert");
+        } else {
+            this.#inputScreen.classList.remove("insert");
+        }
 
         this.#inputScreen.innerHTML = this.#buffer.toString();
         

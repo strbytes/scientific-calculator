@@ -44,6 +44,14 @@ body {
   font-size: 1rem;
 }
 
+.insert::after {
+  content: "ins";
+  position: absolute;
+  top: 0.5rem;
+  left: 3rem;
+  font-size: 1rem;
+}
+
 #cursor {
   animation: blinker 1s step-start infinite;
 }
