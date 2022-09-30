@@ -57,8 +57,8 @@ class Calculator {
             keyValue = key.id;
             keySymbol = key.dataset.buffer || key.textContent;
         }
-
-        if (this.#clear) {
+        
+        if (this.#clear && keyValue !== "second") {
             if (keyValue in this.#specialKeys) {
                 this.#clear = false;
             } else {
@@ -99,4 +99,5 @@ class Calculator {
         
     }
 }
+
 export default Calculator;
