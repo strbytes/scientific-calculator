@@ -8,6 +8,14 @@ class InputBuffer {
     this.#displayTokens.splice(this.#cursor, 0, display ? display : token);
     this.#cursor += 1;
   }
+  
+  ans(answer) {
+    for (let i = 0; i < this.#tokens.length; i++) {
+      if (this.#displayTokens[i] === "ANS") {
+        this.#tokens[i] = answer;
+      }
+    }
+  }
 
   clear() {
     this.#tokens = [];

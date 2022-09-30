@@ -3,6 +3,7 @@ import TokenBuffer from './tokenBuffer.js';
 import parser from './parser.js';
 
 class Calculator {
+    #ans = 0;
     #buffer = new InputBuffer();
     #clear = false;
     #clearOutput = false;
@@ -36,9 +37,11 @@ class Calculator {
     evaluate() {
         if (this.#buffer.length) {
             try {
+                this.#buffer.ans(this.#ans);
                 let tokens = new TokenBuffer(this.#buffer);
                 let AST = parser(tokens);
-                this.#outputScreen.textContent = (AST.eval());
+                this.#ans = AST.eval();
+                this.#outputScreen.textContent = (this.#ans);
                 this.#clear = true;
             } catch {
                 this.#outputScreen.textContent = "ERROR";
@@ -76,6 +79,11 @@ class Calculator {
             this.#buffer.insert(keyValue, keySymbol);
             this.#insert = false;
         } else {
+            if (this.#buffer.length === 0 && 
+                ["*", "/", "+", "-", "^", ")xrt(", 
+                    ")squared", ")inverted", ")E("].includes(keyValue)) {
+                this.#buffer.add("ANS", "ANS");
+            }
             this.#buffer.add(keyValue, keySymbol);
         }
 
