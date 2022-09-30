@@ -34,10 +34,17 @@ class Calculator {
     }
 
     evaluate() {
-        let tokens = new TokenBuffer(this.#buffer);
-        let AST = parser(tokens);
-        this.#outputScreen.textContent = (AST.eval());
-        this.#clear = true;
+        if (this.#buffer.length) {
+            try {
+                let tokens = new TokenBuffer(this.#buffer);
+                let AST = parser(tokens);
+                this.#outputScreen.textContent = (AST.eval());
+                this.#clear = true;
+            } catch {
+                this.#outputScreen.textContent = "ERROR";
+                this.#clearOutput = true;
+            }
+        }
     }
 
     keyHandler(e) {

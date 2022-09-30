@@ -46,7 +46,7 @@ class InputBuffer {
     return this.#cursor;
   }
 
-  length() {
+  get length() {
     return this.#tokens.length;
   }
 
