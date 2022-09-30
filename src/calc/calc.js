@@ -42,9 +42,6 @@ class Calculator {
 
     keyHandler(e) {
         let key = e.target;
-        if (this.#clear) {
-            this.#specialKeys["clear"]();
-        }
         let keyValue, keySymbol;
         if (this.#second) {
             keyValue = key.dataset.secondValue || key.id;
@@ -52,6 +49,18 @@ class Calculator {
         } else {
             keyValue = key.id;
             keySymbol = key.dataset.buffer || key.textContent;
+        }
+
+        if (this.#clear) {
+            if (keyValue in this.#specialKeys) {
+                this.#clear = false;
+            } else {
+                this.#specialKeys["clear"]();
+            }
+        }
+        
+        if (this.#clearOutput && keyValue !== "clear") {
+            this.#clearOutput = false;
         }
 
         if (this.#specialKeys.hasOwnProperty(keyValue)) {
