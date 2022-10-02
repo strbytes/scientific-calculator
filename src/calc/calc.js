@@ -29,7 +29,7 @@ class Calculator {
         "right": this.#buffer.right.bind(this.#buffer),
         "second": _ => this.#second = this.#second? false : true,
     };
-    
+
     constructor() {
         this.#inputScreen.innerHTML = this.#buffer.toString();
     }
@@ -60,7 +60,7 @@ class Calculator {
             keyValue = key.id;
             keySymbol = key.dataset.buffer || key.textContent;
         }
-        
+
         if (this.#clear && keyValue !== "second") {
             if (keyValue in this.#specialKeys) {
                 this.#clear = false;
@@ -68,7 +68,7 @@ class Calculator {
                 this.#specialKeys["clear"]();
             }
         }
-        
+
         if (this.#clearOutput && keyValue !== "clear") {
             this.#clearOutput = false;
         }
@@ -93,7 +93,7 @@ class Calculator {
         } else {
             this.#inputScreen.classList.remove("second");
         }
-        
+
         if (this.#insert && ["clear", "del"].includes(keyValue)) {
             this.#insert = false;
         }
@@ -104,7 +104,6 @@ class Calculator {
         }
 
         this.#inputScreen.innerHTML = this.#buffer.toString();
-        
     }
 }
 

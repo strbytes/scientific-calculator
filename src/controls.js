@@ -169,7 +169,7 @@ function ControlBuilder(calc) {
     button.addEventListener("click", calc.keyHandler.bind(calc));
     return button;
   }
-  
+
   buildControls();
 }
 

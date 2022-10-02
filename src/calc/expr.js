@@ -30,11 +30,11 @@ class Expression {
   constructor(...args) {
     this.#args = args;
   }
-  
+
   eval() {
     throw "Superclass method not implemented"
   }
-  
+
   toString() {
     return this.constructor.name + "(" + this.#args + ")";
   }
@@ -51,7 +51,7 @@ class BinaryExpr extends Expression {
     this.#operator = operator;
     this.#right = right;
   }
-  
+
   eval() {
     let left = this.#left.eval();
     let operator = Globals[this.#operator];
@@ -63,13 +63,13 @@ class BinaryExpr extends Expression {
 class CallExpr extends Expression {
   #operator;
   #operand;
-  
+
   constructor(operator, operand) {
     super(operator, operand);
     this.#operator = operator;
     this.#operand = operand;
   }
-  
+
   eval() {
     if (!Globals[this.#operator]) {
       throw `Name ${this.#operator} not found`;
@@ -82,10 +82,8 @@ class CallExpr extends Expression {
     return operator(operand);
   }
 }
-
 class Literal extends Expression {
   #value;
-  
   constructor(value) {
     super(value);
     this.#value = value;
@@ -104,4 +102,3 @@ class Literal extends Expression {
 }
 
 module.exports = {BinaryExpr, CallExpr, Literal};
-
