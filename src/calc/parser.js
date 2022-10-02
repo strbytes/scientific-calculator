@@ -100,6 +100,7 @@ function literal(source) {
   }
   if (   is_literal(source.current) 
       || is_name(source.current) 
+      || is_call(source.current) 
       || source.current === "(" ) {
     expression = new BinaryExpr(expression, "*", exponent(source));
   }
