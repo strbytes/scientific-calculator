@@ -8,7 +8,7 @@ class InputBuffer {
     this.#displayTokens.splice(this.#cursor, 0, display ? display : token);
     this.#cursor += 1;
   }
-  
+
   ans(answer) {
     for (let i = 0; i < this.#tokens.length; i++) {
       if (this.#displayTokens[i] === "ANS") {
@@ -27,12 +27,9 @@ class InputBuffer {
     if (this.#tokens.length !== 0 && this.#cursor !== this.#tokens.length) {
       this.#tokens.splice(this.#cursor, 1);
       this.#displayTokens.splice(this.#cursor, 1);
-      // if (this.#cursor === this.#tokens.length) {
-      //   this.#cursor -= 1;
-      // }
     }
   }
-  
+
   insert(token, display) {
     this.#tokens.splice(this.#cursor, 1, token);
     this.#displayTokens.splice(this.#cursor, 1, display ? display : token);
