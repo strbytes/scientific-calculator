@@ -56,15 +56,47 @@ class InputBuffer {
   }
 
   toString() {
-    let stringBuilder = [];
-    for (let i = 0; i <= this.#displayTokens.length; i++) {
-      let token = this.#displayTokens[i] ? this.#displayTokens[i] : "&nbsp";
-      if (i === this.#cursor) {
-          stringBuilder.push(`<span id='cursor'>${token}</span>`);
+    let displayStart = 0;
+    let displayEnd = 1;
+    let displayCursor = 0;
+    let length = 0;
+    let displayTokens = [...this.#displayTokens, "&nbsp"];
+
+    for (let i = 0; i < this.#displayTokens.length; i++) {
+      let token = this.#displayTokens[i];
+      let tokenLength = token === "&nbsp" ? 1 : token.length;
+
+      if (i < this.#cursor) {
+        displayCursor += 1;
+      }
+      if (length + tokenLength < 18) {
+        displayEnd += 1;
+        length += tokenLength;
+
       } else {
-        stringBuilder.push(token);
+        if (displayCursor > 0) {
+          displayStart += 1;
+          length -= displayTokens[displayStart].length;
+          displayEnd += 1; 
+          length += tokenLength;
+          displayCursor -= 1;
+
+        } else if (displayCursor === 0) {
+          displayEnd -= 1;
+          break
+
+        } else if (displayCursor < 0) {
+          displayStart -= 1;
+          length += displayTokens[displayStart].length;
+          displayEnd -= 1;
+          length -= tokenLength;
+        }
       }
     }
+
+    let stringBuilder = displayTokens.slice(displayStart, displayEnd);
+    let cursorChar = stringBuilder[displayCursor];
+    stringBuilder[displayCursor] = `<span id='cursor'>${cursorChar}</span>`
 
     return stringBuilder.join("");
   }
