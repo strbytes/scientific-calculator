@@ -1,7 +1,7 @@
 /**
  * Stores a series of tokens to be used by the parser, and provides a queue-
  * like interface for accessing them.
- */ 
+ */
 class TokenBuffer {
   #tokens;
   #index = 0;
@@ -20,7 +20,7 @@ class TokenBuffer {
         numberBuilder = [];
         this.#tokens.push(number);
         this.#tokens.push(t);
-      } else { 
+      } else {
         this.#tokens.push(t);
       }
     }
@@ -35,7 +35,7 @@ class TokenBuffer {
   }
 
   /**
-   * Returns the current token in the buffer. Undefined response indicates end 
+   * Returns the current token in the buffer. Undefined response indicates end
    * of buffer.
    */
   get current() {
@@ -43,7 +43,7 @@ class TokenBuffer {
   }
 
   /**
-   * Returns the next token in the buffer. Undefined response indicates end of 
+   * Returns the next token in the buffer. Undefined response indicates end of
    * buffer.
    */
   get next() {
@@ -65,7 +65,7 @@ class TokenBuffer {
 
   toString() {
     let stringBuilder = [];
-    for (let i = 0; i < this.#tokens.length; i ++) {
+    for (let i = 0; i < this.#tokens.length; i++) {
       let t = this.#tokens[i];
       if (i == this.#index) {
         t = "_" + t + "_";
@@ -77,9 +77,9 @@ class TokenBuffer {
 }
 
 function isNumeric(token) {
-  return [
-    "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."
-  ].includes(token);
+  return ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."].includes(
+    token
+  );
 }
 
 module.exports = TokenBuffer;

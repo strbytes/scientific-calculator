@@ -31,7 +31,7 @@ function factor(source) {
     let right = exponent(source);
     expression = new BinaryExpr(expression, operator, right);
   }
-  return expression;  
+  return expression;
 }
 
 function exponent(source) {
@@ -46,7 +46,7 @@ function exponent(source) {
       expression = new BinaryExpr(expression, operator, right);
     }
   }
-  return expression;  
+  return expression;
 }
 
 function unary(source) {
@@ -67,7 +67,7 @@ function postfix(source) {
       let right = parser(source);
       expression = new BinaryExpr(expression, operator, right);
     } else {
-      expression = new CallExpr(operator, expression)
+      expression = new CallExpr(operator, expression);
     }
   }
   return expression;
@@ -93,22 +93,24 @@ function literal(source) {
     source.pop();
     expression = parser(source);
     if (source.current === ")") {
-      source.pop()
+      source.pop();
     }
   } else {
     throw `Invalid literal ${source.current}`;
   }
-  if (   is_literal(source.current) 
-      || is_name(source.current) 
-      || is_call(source.current) 
-      || source.current === "(" ) {
+  if (
+    is_literal(source.current) ||
+    is_name(source.current) ||
+    is_call(source.current) ||
+    source.current === "("
+  ) {
     expression = new BinaryExpr(expression, "*", exponent(source));
   }
   return expression;
 }
 
 function is_literal(token) {
-  return (typeof token === "number");
+  return typeof token === "number";
 }
 
 function is_name(token) {

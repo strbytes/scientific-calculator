@@ -1,29 +1,29 @@
 const Globals = {
   // Symbols in names prevent special operations from being interpreted twice.
-  "log": Math.log10,
-  "tenPow": (x) => 10 ** x,
-  "ln": Math.log,
-  "ePow": (x) => Math.E ** x,
-  "pi": Math.PI,
-  "e": Math.E,
+  log: Math.log10,
+  tenPow: (x) => 10 ** x,
+  ln: Math.log,
+  ePow: (x) => Math.E ** x,
+  pi: Math.PI,
+  e: Math.E,
   "^": Math.pow,
-  "xrt": (x, y) => y ** (1 / x),
-  "sqrt": Math.sqrt,
-  "squared": (x) => x ** 2,
-  "sin": Math.sin,
-  "asin": Math.asin,
-  "cos": Math.cos,
-  "acos": Math.acos,
-  "tan": Math.tan,
-  "atan": Math.atan,
-  "inverted": (x) => x ** -1,
-  "E": (x, y) => x * 10 ** y,
-  "negate": (x) => -x,
+  xrt: (x, y) => y ** (1 / x),
+  sqrt: Math.sqrt,
+  squared: (x) => x ** 2,
+  sin: Math.sin,
+  asin: Math.asin,
+  cos: Math.cos,
+  acos: Math.acos,
+  tan: Math.tan,
+  atan: Math.atan,
+  inverted: (x) => x ** -1,
+  E: (x, y) => x * 10 ** y,
+  negate: (x) => -x,
   "+": (x, y) => x + y,
   "-": (x, y) => x - y,
   "*": (x, y) => x * y,
   "/": (x, y) => x / y,
-}
+};
 
 class Expression {
   #args;
@@ -32,7 +32,7 @@ class Expression {
   }
 
   eval() {
-    throw "Superclass method not implemented"
+    throw "Superclass method not implemented";
   }
 
   toString() {
@@ -90,7 +90,7 @@ class Literal extends Expression {
   }
 
   eval() {
-    if (typeof this.#value == 'number') {
+    if (typeof this.#value == "number") {
       return this.#value;
     } else {
       if (!Globals[this.#value]) {
@@ -101,4 +101,4 @@ class Literal extends Expression {
   }
 }
 
-module.exports = {BinaryExpr, CallExpr, Literal};
+module.exports = { BinaryExpr, CallExpr, Literal };

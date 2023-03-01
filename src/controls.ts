@@ -3,7 +3,7 @@ const controls = {
   edit: [
     {
       label: "del",
-      second:"ins"
+      second: "ins",
     },
     {
       label: "<-",
@@ -39,13 +39,13 @@ const controls = {
     {
       label: "\u03c0",
       value: "pi",
-      second: "e"
+      second: "e",
     },
     {
       label: "^",
       second: "\u02E3\u221A",
       secondValue: ")xrt(",
-      secondBuffer: "\u02E3\u221A("
+      secondBuffer: "\u02E3\u221A(",
     },
     {
       label: "x\u00B2",
@@ -53,7 +53,7 @@ const controls = {
       buffer: "\u00B2",
       second: "\u221A",
       secondValue: "sqrt(",
-      secondBuffer: "\u221A("
+      secondBuffer: "\u221A(",
     },
   ],
 
@@ -64,7 +64,7 @@ const controls = {
       buffer: "sin(",
       second: "sin\u207B",
       secondValue: "asin(",
-      secondBuffer: "sin\u207B("
+      secondBuffer: "sin\u207B(",
     },
     {
       label: "cos",
@@ -72,7 +72,7 @@ const controls = {
       buffer: "cos(",
       second: "cos\u207B",
       secondValue: "acos(",
-      secondBuffer: "cos\u207B("
+      secondBuffer: "cos\u207B(",
     },
     {
       label: "tan",
@@ -87,7 +87,7 @@ const controls = {
       value: ")inverted",
       buffer: "\u207B\u00B9",
       second: "\u1D07",
-      secondValue: ")E("
+      secondValue: ")E(",
     },
     {
       label: "(",
@@ -109,7 +109,7 @@ const controls = {
     },
     {
       label: "\uFE63",
-      value: "-"
+      value: "-",
     },
     {
       label: "+",
@@ -121,16 +121,22 @@ const controls = {
   ],
 
   numbers: [
-    {label: "7"}, {label: "8"}, {label: "9"},
-    {label: "4"}, {label: "5"}, {label: "6"},
-    {label: "1"}, {label: "2"}, {label: "3"}, 
-    {label: "\u002D", value: "negate", second: "ANS"}, 
-    {label: "0"}, {label: "."},
-  ]
-}
+    { label: "7" },
+    { label: "8" },
+    { label: "9" },
+    { label: "4" },
+    { label: "5" },
+    { label: "6" },
+    { label: "1" },
+    { label: "2" },
+    { label: "3" },
+    { label: "\u002D", value: "negate", second: "ANS" },
+    { label: "0" },
+    { label: "." },
+  ],
+};
 
 function ControlBuilder(calc) {
-
   /* Builds all of the calculator buttons and sections. */
   function buildControls() {
     const controlsDiv = document.querySelector("#controls");
@@ -151,7 +157,7 @@ function ControlBuilder(calc) {
     return sectionDiv;
   }
 
-  /**  
+  /**
    * Make a button out of a control object.
    */
   function makeButton(control) {
@@ -159,13 +165,17 @@ function ControlBuilder(calc) {
     button.id = control.value ? control.value : control.label;
     button.textContent = control.label;
     button.dataset.buffer = control.buffer ? control.buffer : "";
-    button.dataset.secondLabel = control.second ? control.second: "";
-    button.dataset.secondValue = 
-      control.secondValue ? control.secondValue :
-      control.second ? control.second :
-      control.value ? control.value : control.label;
-    button.dataset.secondBuffer = 
-      control.secondBuffer ? control.secondBuffer : "";
+    button.dataset.secondLabel = control.second ? control.second : "";
+    button.dataset.secondValue = control.secondValue
+      ? control.secondValue
+      : control.second
+      ? control.second
+      : control.value
+      ? control.value
+      : control.label;
+    button.dataset.secondBuffer = control.secondBuffer
+      ? control.secondBuffer
+      : "";
     button.addEventListener("click", calc.keyHandler.bind(calc));
     return button;
   }

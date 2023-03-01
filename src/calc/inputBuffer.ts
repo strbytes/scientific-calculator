@@ -72,19 +72,16 @@ class InputBuffer {
       if (length + tokenLength < 18) {
         displayEnd += 1;
         length += tokenLength;
-
       } else {
         if (displayCursor > 0) {
           displayStart += 1;
           length -= displayTokens[displayStart].length;
-          displayEnd += 1; 
+          displayEnd += 1;
           length += tokenLength;
           displayCursor -= 1;
-
         } else if (displayCursor === 0) {
           displayEnd -= 1;
-          break
-
+          break;
         } else if (displayCursor < 0) {
           displayStart -= 1;
           length += displayTokens[displayStart].length;
@@ -96,7 +93,7 @@ class InputBuffer {
 
     let stringBuilder = displayTokens.slice(displayStart, displayEnd);
     let cursorChar = stringBuilder[displayCursor];
-    stringBuilder[displayCursor] = `<span id='cursor'>${cursorChar}</span>`
+    stringBuilder[displayCursor] = `<span id='cursor'>${cursorChar}</span>`;
 
     return stringBuilder.join("");
   }
@@ -106,7 +103,7 @@ class InputBuffer {
     let tokens = this.#tokens;
 
     return {
-      next: () => ({ value: tokens[++index], done: !(index in tokens) })
+      next: () => ({ value: tokens[++index], done: !(index in tokens) }),
     };
   }
 }
