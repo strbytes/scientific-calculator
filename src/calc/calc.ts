@@ -1,6 +1,6 @@
-import InputBuffer from "./inputBuffer.js";
-import TokenBuffer from "./tokenBuffer.js";
-import parser from "./parser.js";
+import InputBuffer from "./inputBuffer";
+import TokenBuffer from "./tokenBuffer";
+import parser from "./parser";
 
 class Calculator {
   #ans = 0;
@@ -41,7 +41,7 @@ class Calculator {
         let tokens = new TokenBuffer(this.#buffer);
         let AST = parser(tokens);
         this.#ans = AST.eval();
-        this.#outputScreen.textContent = this.#ans;
+        this.#outputScreen.textContent = this.#ans.toString();
         this.#clear = true;
       } catch {
         this.#outputScreen.textContent = "ERROR";

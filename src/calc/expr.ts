@@ -40,7 +40,7 @@ class Expression {
   }
 }
 
-class BinaryExpr extends Expression {
+export class BinaryExpr extends Expression {
   #left;
   #operator;
   #right;
@@ -60,7 +60,7 @@ class BinaryExpr extends Expression {
   }
 }
 
-class CallExpr extends Expression {
+export class CallExpr extends Expression {
   #operator;
   #operand;
 
@@ -82,7 +82,8 @@ class CallExpr extends Expression {
     return operator(operand);
   }
 }
-class Literal extends Expression {
+
+export class Literal extends Expression {
   #value;
   constructor(value) {
     super(value);
@@ -100,5 +101,3 @@ class Literal extends Expression {
     }
   }
 }
-
-module.exports = { BinaryExpr, CallExpr, Literal };

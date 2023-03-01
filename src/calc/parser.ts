@@ -14,7 +14,7 @@ const Delimiters = ["(", ")"];
 /*
  * Covert a TokenBuffer into a nested Expression structure.
  */
-function parser(source) {
+export default function parser(source) {
   let expression = factor(source);
   while (Terms.includes(source.current)) {
     let operator = source.pop();
@@ -124,5 +124,3 @@ function is_call(token) {
 function is_postfix(token) {
   return token ? /^\)[a-zA-Z]+\(?$/.test(token) : false;
 }
-
-module.exports = parser;

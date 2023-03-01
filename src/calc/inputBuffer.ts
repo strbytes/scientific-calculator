@@ -1,4 +1,4 @@
-class InputBuffer {
+export default class InputBuffer {
   #tokens = [];
   #displayTokens = [];
   #cursor = 0;
@@ -107,5 +107,3 @@ class InputBuffer {
     };
   }
 }
-
-module.exports = InputBuffer;

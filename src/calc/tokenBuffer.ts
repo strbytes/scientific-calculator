@@ -2,7 +2,7 @@
  * Stores a series of tokens to be used by the parser, and provides a queue-
  * like interface for accessing them.
  */
-class TokenBuffer {
+export default class TokenBuffer {
   #tokens;
   #index = 0;
 
@@ -81,5 +81,3 @@ function isNumeric(token) {
     token
   );
 }
-
-module.exports = TokenBuffer;
