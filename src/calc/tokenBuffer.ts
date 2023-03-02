@@ -1,12 +1,14 @@
+import InputBuffer from "./inputBuffer";
+
 /**
  * Stores a series of tokens to be used by the parser, and provides a queue-
  * like interface for accessing them.
  */
 export default class TokenBuffer {
-  #tokens;
+  #tokens: string | number[];
   #index = 0;
 
-  constructor(inputBuffer) {
+  constructor(inputBuffer: InputBuffer) {
     this.#tokens = [];
 
     let numberBuilder = [];
@@ -16,9 +18,9 @@ export default class TokenBuffer {
       } else if (numberBuilder.length > 0) {
         // TODO how to handle bad inputs
         // TODO make this a function
-        let number = parseFloat(numberBuilder.join(""));
+        let numberToken = parseFloat(numberBuilder.join(""));
         numberBuilder = [];
-        this.#tokens.push(number);
+        this.#tokens.push(numberToken);
         this.#tokens.push(t);
       } else {
         this.#tokens.push(t);
@@ -76,7 +78,7 @@ export default class TokenBuffer {
   }
 }
 
-function isNumeric(token) {
+function isNumeric(token: string) {
   return ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."].includes(
     token
   );

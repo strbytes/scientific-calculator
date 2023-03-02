@@ -3,13 +3,13 @@ export default class InputBuffer {
   #displayTokens = [];
   #cursor = 0;
 
-  add(token, display) {
+  add(token: string, display: string) {
     this.#tokens.splice(this.#cursor, 0, token);
     this.#displayTokens.splice(this.#cursor, 0, display ? display : token);
     this.#cursor += 1;
   }
 
-  ans(answer) {
+  ans(answer: number) {
     for (let i = 0; i < this.#tokens.length; i++) {
       if (this.#displayTokens[i] === "ANS") {
         this.#tokens[i] = answer;
@@ -30,7 +30,7 @@ export default class InputBuffer {
     }
   }
 
-  insert(token, display) {
+  insert(token: string, display: string) {
     this.#tokens.splice(this.#cursor, 1, token);
     this.#displayTokens.splice(this.#cursor, 1, display ? display : token);
   }
