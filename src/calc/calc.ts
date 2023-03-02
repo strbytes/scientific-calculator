@@ -13,7 +13,7 @@ class Calculator {
   #second = false;
   #specialKeys = {
     equals: this.evaluate.bind(this),
-    clear: ((_) => {
+    clear: (() => {
       this.#buffer.clear();
       this.#clear = false;
       if (this.#clearOutput) {
@@ -24,10 +24,10 @@ class Calculator {
       }
     }).bind(this),
     del: this.#buffer.del.bind(this.#buffer),
-    ins: (_) => (this.#insert = this.#insert ? false : true),
+    ins: () => (this.#insert = this.#insert ? false : true),
     left: this.#buffer.left.bind(this.#buffer),
     right: this.#buffer.right.bind(this.#buffer),
-    second: (_) => (this.#second = this.#second ? false : true),
+    second: () => (this.#second = this.#second ? false : true),
   };
 
   constructor() {
@@ -50,9 +50,12 @@ class Calculator {
     }
   }
 
-  keyHandler(e) {
+  keyHandler(e: Event) {
     let key = e.target;
-    let keyValue, keySymbol;
+    if (!(key instanceof HTMLButtonElement)) {
+      return;
+    }
+    let keyValue: string, keySymbol: string;
     if (this.#second) {
       keyValue = key.dataset.secondValue || key.id;
       keySymbol = key.dataset.secondBuffer || key.dataset.secondLabel;
