@@ -25,7 +25,7 @@ const Globals = {
   "/": (x, y) => x / y,
 };
 
-class Expression {
+export class Expression {
   #args;
   constructor(...args) {
     this.#args = args;

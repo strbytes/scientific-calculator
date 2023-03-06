@@ -1,6 +1,6 @@
-const BinaryExpr = require("./expr").BinaryExpr;
-const CallExpr = require("./expr").CallExpr;
-const Literal = require("./expr").Literal;
+import TokenBuffer from "./tokenBuffer";
+
+import { Expression, BinaryExpr, CallExpr, Literal } from "./expr";
 
 /*
  * Built-in operators.
@@ -9,14 +9,13 @@ const Terms = ["+", "-"];
 const Factors = ["*", "/", ")E("];
 const Exponents = ["^", ")squared", ")inverted"];
 const Unary = ["negate"];
-const Delimiters = ["(", ")"];
 
 /*
  * Covert a TokenBuffer into a nested Expression structure.
  */
-export default function parser(source) {
+export default function parser(source: TokenBuffer) {
   let expression = factor(source);
-  while (Terms.includes(source.current)) {
+  while (Terms.includes(source.current.toString())) {
     let operator = source.pop();
     let right = factor(source);
     expression = new BinaryExpr(expression, operator, right);
@@ -24,9 +23,9 @@ export default function parser(source) {
   return expression;
 }
 
-function factor(source) {
+function factor(source: TokenBuffer) {
   let expression = exponent(source);
-  while (Factors.includes(source.current)) {
+  while (Factors.includes(source.current.toString())) {
     let operator = source.pop();
     let right = exponent(source);
     expression = new BinaryExpr(expression, operator, right);
@@ -34,9 +33,9 @@ function factor(source) {
   return expression;
 }
 
-function exponent(source) {
+function exponent(source: TokenBuffer) {
   let expression = unary(source);
-  while (Exponents.includes(source.current)) {
+  while (Exponents.includes(source.current.toString())) {
     if (is_postfix(source.current)) {
       let operator = source.pop();
       expression = new CallExpr(operator, expression);
@@ -49,8 +48,8 @@ function exponent(source) {
   return expression;
 }
 
-function unary(source) {
-  if (Unary.includes(source.current)) {
+function unary(source: TokenBuffer) {
+  if (Unary.includes(source.current.toString())) {
     let operator = source.pop();
     let operand = callExpr(source);
     return new CallExpr(operator, operand);
@@ -58,10 +57,10 @@ function unary(source) {
   return postfix(source);
 }
 
-function postfix(source) {
+function postfix(source: TokenBuffer) {
   let expression = callExpr(source);
   while (is_postfix(source.current)) {
-    let operator = source.pop().slice(1);
+    let operator = source.pop().toString().slice(1);
     if (is_call(operator)) {
       operator = operator.slice(0, -1);
       let right = parser(source);
@@ -73,9 +72,9 @@ function postfix(source) {
   return expression;
 }
 
-function callExpr(source) {
+function callExpr(source: TokenBuffer) {
   if (is_call(source.current)) {
-    let operator = source.pop().slice(0, -1);
+    let operator = source.pop().toString().slice(0, -1);
     let operand = parser(source);
     if (source.current === ")") {
       source.pop();
@@ -85,14 +84,14 @@ function callExpr(source) {
   return literal(source);
 }
 
-function literal(source) {
-  let expression;
+function literal(source: TokenBuffer) {
+  let expression: Expression;
   if (is_literal(source.current) || is_name(source.current)) {
-    expression = new Literal(source.pop());
+    return new Literal(source.pop());
   } else if (source.current === "(") {
     source.pop();
     expression = parser(source);
-    if (source.current === ")") {
+    if (source.current.toString() === ")") {
       source.pop();
     }
   } else {
@@ -109,18 +108,18 @@ function literal(source) {
   return expression;
 }
 
-function is_literal(token) {
+function is_literal(token: string | number) {
   return typeof token === "number";
 }
 
-function is_name(token) {
-  return token ? /^[a-zA-Z]+$/.test(token) : false;
+function is_name(token: string | number) {
+  return token ? /^[a-zA-Z]+$/.test(token.toString()) : false;
 }
 
-function is_call(token) {
-  return token ? /^[a-zA-Z]+\($/.test(token) : false;
+function is_call(token: string | number) {
+  return token ? /^[a-zA-Z]+\($/.test(token.toString()) : false;
 }
 
-function is_postfix(token) {
-  return token ? /^\)[a-zA-Z]+\(?$/.test(token) : false;
+function is_postfix(token: string | number) {
+  return token ? /^\)[a-zA-Z]+\(?$/.test(token.toString()) : false;
 }

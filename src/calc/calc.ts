@@ -43,7 +43,8 @@ class Calculator {
         this.#ans = AST.eval();
         this.#outputScreen.textContent = this.#ans.toString();
         this.#clear = true;
-      } catch {
+      } catch (error) {
+        console.log(error);
         this.#outputScreen.textContent = "ERROR";
         this.#clearOutput = true;
       }
