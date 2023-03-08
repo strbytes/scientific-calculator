@@ -15,7 +15,7 @@ const Unary = ["negate"];
  */
 export default function parser(source: TokenBuffer) {
   let expression = factor(source);
-  while (Terms.includes(source.current.toString())) {
+  while (!is_end(source.current) && Terms.includes(source.current.toString())) {
     let operator = source.pop();
     let right = factor(source);
     expression = new BinaryExpr(expression, operator, right);
@@ -25,7 +25,10 @@ export default function parser(source: TokenBuffer) {
 
 function factor(source: TokenBuffer) {
   let expression = exponent(source);
-  while (Factors.includes(source.current.toString())) {
+  while (
+    !is_end(source.current) &&
+    Factors.includes(source.current.toString())
+  ) {
     let operator = source.pop();
     let right = exponent(source);
     expression = new BinaryExpr(expression, operator, right);
@@ -35,7 +38,10 @@ function factor(source: TokenBuffer) {
 
 function exponent(source: TokenBuffer) {
   let expression = unary(source);
-  while (Exponents.includes(source.current.toString())) {
+  while (
+    !is_end(source.current) &&
+    Exponents.includes(source.current.toString())
+  ) {
     if (is_postfix(source.current)) {
       let operator = source.pop();
       expression = new CallExpr(operator, expression);
@@ -49,7 +55,7 @@ function exponent(source: TokenBuffer) {
 }
 
 function unary(source: TokenBuffer) {
-  if (Unary.includes(source.current.toString())) {
+  if (!is_end(source.current) && Unary.includes(source.current.toString())) {
     let operator = source.pop();
     let operand = callExpr(source);
     return new CallExpr(operator, operand);
@@ -59,7 +65,7 @@ function unary(source: TokenBuffer) {
 
 function postfix(source: TokenBuffer) {
   let expression = callExpr(source);
-  while (is_postfix(source.current)) {
+  while (!is_end(source.current) && is_postfix(source.current)) {
     let operator = source.pop().toString().slice(1);
     if (is_call(operator)) {
       operator = operator.slice(0, -1);
@@ -73,7 +79,7 @@ function postfix(source: TokenBuffer) {
 }
 
 function callExpr(source: TokenBuffer) {
-  if (is_call(source.current)) {
+  if (!is_end(source.current) && is_call(source.current)) {
     let operator = source.pop().toString().slice(0, -1);
     let operand = parser(source);
     if (source.current === ")") {
@@ -106,6 +112,10 @@ function literal(source: TokenBuffer) {
     expression = new BinaryExpr(expression, "*", exponent(source));
   }
   return expression;
+}
+
+function is_end(token: string | number) {
+  return typeof token === "string" && token === "END";
 }
 
 function is_literal(token: string | number) {

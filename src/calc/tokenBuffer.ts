@@ -5,8 +5,8 @@ import InputBuffer from "./inputBuffer";
  * like interface for accessing them.
  */
 export default class TokenBuffer {
-  #tokens: string | number[];
-  #index = 0;
+  #tokens: (string | number)[];
+  #index: number = 0;
 
   constructor(inputBuffer: InputBuffer) {
     this.#tokens = [];
@@ -34,6 +34,8 @@ export default class TokenBuffer {
       let number = parseFloat(numberBuilder.join(""));
       this.#tokens.push(number);
     }
+
+    this.#tokens.push("END");
   }
 
   /**
