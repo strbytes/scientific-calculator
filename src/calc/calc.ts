@@ -11,7 +11,7 @@ class Calculator {
   #inputScreen = document.querySelector("#input-screen");
   #outputScreen = document.querySelector("#output-screen");
   #second = false;
-  #specialKeys = {
+  #specialKeys: { [key: string]: Function } = {
     equals: this.evaluate.bind(this),
     clear: (() => {
       this.#buffer.clear();
