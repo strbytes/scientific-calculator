@@ -1,4 +1,30 @@
-const Globals = {
+type unaryFn = (x: number) => number;
+type binaryFn = (x: number, y: number) => number;
+type Values = number | unaryFn | binaryFn;
+
+function assertIsNumber(operator: Values): asserts operator is number {
+  if (typeof operator === "number") {
+    throw `Type error: expected unaryFn, found ${typeof operator}`;
+  }
+}
+
+function assertIsUnary(operator: Values): asserts operator is unaryFn {
+  if (typeof operator != "number" && operator.length == 1) {
+    throw `Type error: expected unaryFn, found ${typeof operator}`;
+  }
+}
+
+function assertIsBinary(operator: Values): asserts operator is binaryFn {
+  if (typeof operator != "number" && operator.length == 2) {
+    throw `Type error: expected binaryFn, found ${typeof operator}`;
+  }
+}
+
+interface Environment {
+  [key: string]: Values;
+}
+
+const Globals: Environment = {
   // Symbols in names prevent special operations from being interpreted twice.
   log: Math.log10,
   tenPow: (x: number) => 10 ** x,
@@ -31,7 +57,7 @@ export class Expression {
     this.#args = args;
   }
 
-  eval() {
+  eval(): number {
     throw "Superclass method not implemented";
   }
 
@@ -55,6 +81,7 @@ export class BinaryExpr extends Expression {
   eval() {
     let left = this.#left.eval();
     let operator = Globals[this.#operator];
+    assertIsBinary(operator);
     let right = this.#right.eval();
     return operator(left, right);
   }
@@ -75,9 +102,7 @@ export class CallExpr extends Expression {
       throw `Name ${this.#operator} not found`;
     }
     let operator = Globals[this.#operator];
-    if (typeof operator != "function") {
-      throw `${this.#operator} is not a function`;
-    }
+    assertIsUnary(operator);
     let operand = this.#operand.eval();
     return operator(operand);
   }
@@ -97,7 +122,9 @@ export class Literal extends Expression {
       if (!Globals[this.#value]) {
         throw `Name ${this.#value} not found`;
       }
-      return Globals[this.#value];
+      let value = Globals[this.#value];
+      assertIsNumber(value);
+      return value;
     }
   }
 }
