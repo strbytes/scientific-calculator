@@ -1,33 +1,33 @@
 const Globals = {
   // Symbols in names prevent special operations from being interpreted twice.
   log: Math.log10,
-  tenPow: (x) => 10 ** x,
+  tenPow: (x: number) => 10 ** x,
   ln: Math.log,
-  ePow: (x) => Math.E ** x,
+  ePow: (x: number) => Math.E ** x,
   pi: Math.PI,
   e: Math.E,
   "^": Math.pow,
-  xrt: (x, y) => y ** (1 / x),
+  xrt: (x: number, y: number) => y ** (1 / x),
   sqrt: Math.sqrt,
-  squared: (x) => x ** 2,
+  squared: (x: number) => x ** 2,
   sin: Math.sin,
   asin: Math.asin,
   cos: Math.cos,
   acos: Math.acos,
   tan: Math.tan,
   atan: Math.atan,
-  inverted: (x) => x ** -1,
-  E: (x, y) => x * 10 ** y,
-  negate: (x) => -x,
-  "+": (x, y) => x + y,
-  "-": (x, y) => x - y,
-  "*": (x, y) => x * y,
-  "/": (x, y) => x / y,
+  inverted: (x: number) => x ** -1,
+  E: (x: number, y: number) => x * 10 ** y,
+  negate: (x: number) => -x,
+  "+": (x: number, y: number) => x + y,
+  "-": (x: number, y: number) => x - y,
+  "*": (x: number, y: number) => x * y,
+  "/": (x: number, y: number) => x / y,
 };
 
 export class Expression {
-  #args;
-  constructor(...args) {
+  #args: (Expression | string | number)[];
+  constructor(...args: (Expression | string | number)[]) {
     this.#args = args;
   }
 
@@ -41,11 +41,11 @@ export class Expression {
 }
 
 export class BinaryExpr extends Expression {
-  #left;
-  #operator;
-  #right;
+  #left: Expression;
+  #operator: string;
+  #right: Expression;
 
-  constructor(left, operator, right) {
+  constructor(left: Expression, operator: string, right: Expression) {
     super(left, operator, right);
     this.#left = left;
     this.#operator = operator;
@@ -61,10 +61,10 @@ export class BinaryExpr extends Expression {
 }
 
 export class CallExpr extends Expression {
-  #operator;
-  #operand;
+  #operator: string;
+  #operand: Expression;
 
-  constructor(operator, operand) {
+  constructor(operator: string, operand: Expression) {
     super(operator, operand);
     this.#operator = operator;
     this.#operand = operand;
@@ -84,8 +84,8 @@ export class CallExpr extends Expression {
 }
 
 export class Literal extends Expression {
-  #value;
-  constructor(value) {
+  #value: string | number;
+  constructor(value: string | number) {
     super(value);
     this.#value = value;
   }
