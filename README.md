@@ -5,6 +5,6 @@ Rough around the edges but the important parts work:
 - editable input buffer using the control buttons
 - entered expressions parsed and evaluated using a recursive descent parser and tree evaluation of the AST
 
-Currently (March 2023) converting the project to TypeScript to familiarize myself with that technology.
+Recently (March 2023) converted the project to TypeScript to familiarize myself with that technology.
 
 Deployed link: https://strbytes.github.io/scientific-calculator/
