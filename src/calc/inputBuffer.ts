@@ -1,6 +1,6 @@
 export default class InputBuffer {
-  #tokens = [];
-  #displayTokens = [];
+  #tokens: (string | number)[] = [];
+  #displayTokens: string[] = [];
   #cursor = 0;
 
   add(token: string, display: string) {

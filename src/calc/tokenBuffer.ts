@@ -13,7 +13,7 @@ export default class TokenBuffer {
 
     let numberBuilder = [];
     for (let t of inputBuffer) {
-      if (isNumeric(t)) {
+      if (isNumeric(t.toString())) {
         numberBuilder.push(t);
       } else if (numberBuilder.length > 0) {
         // TODO how to handle bad inputs
