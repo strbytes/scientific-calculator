@@ -17,7 +17,7 @@ class Calculator {
       this.#buffer.clear();
       this.#clear = false;
       if (this.#clearOutput) {
-        this.#outputScreen.textContent = "";
+        this.#outputScreen!.textContent = "";
         this.#clearOutput = false;
       } else {
         this.#clearOutput = true;
@@ -31,7 +31,7 @@ class Calculator {
   };
 
   constructor() {
-    this.#inputScreen.innerHTML = this.#buffer.toString();
+    this.#inputScreen!.innerHTML = this.#buffer.toString();
   }
 
   evaluate() {
@@ -41,11 +41,11 @@ class Calculator {
         let tokens = new TokenBuffer(this.#buffer);
         let AST = parser(tokens);
         this.#ans = AST.eval();
-        this.#outputScreen.textContent = this.#ans.toString();
+        this.#outputScreen!.textContent = this.#ans.toString();
         this.#clear = true;
       } catch (error) {
         console.log(error);
-        this.#outputScreen.textContent = "ERROR";
+        this.#outputScreen!.textContent = "ERROR";
         this.#clearOutput = true;
       }
     }
@@ -59,10 +59,10 @@ class Calculator {
     let keyValue: string, keySymbol: string;
     if (this.#second) {
       keyValue = key.dataset.secondValue || key.id;
-      keySymbol = key.dataset.secondBuffer || key.dataset.secondLabel;
+      keySymbol = key.dataset.secondBuffer || key.dataset.secondLabel || "";
     } else {
       keyValue = key.id;
-      keySymbol = key.dataset.buffer || key.textContent;
+      keySymbol = key.dataset.buffer || key.textContent || "";
     }
 
     if (this.#clear && keyValue !== "second") {
@@ -104,21 +104,21 @@ class Calculator {
 
     if (keyValue !== "second") this.#second = false;
     if (this.#second) {
-      this.#inputScreen.classList.add("second");
+      this.#inputScreen!.classList.add("second");
     } else {
-      this.#inputScreen.classList.remove("second");
+      this.#inputScreen!.classList.remove("second");
     }
 
     if (this.#insert && ["clear", "del"].includes(keyValue)) {
       this.#insert = false;
     }
     if (this.#insert) {
-      this.#inputScreen.classList.add("insert");
+      this.#inputScreen!.classList.add("insert");
     } else {
-      this.#inputScreen.classList.remove("insert");
+      this.#inputScreen!.classList.remove("insert");
     }
 
-    this.#inputScreen.innerHTML = this.#buffer.toString();
+    this.#inputScreen!.innerHTML = this.#buffer.toString();
   }
 }
 

@@ -154,7 +154,7 @@ function ControlBuilder(calc: Calculator) {
     for (let section in controls) {
       // controls is a global variable so just pass the name of each section.
       // Attaches controls directly to the HTML node in index.
-      controlsDiv.appendChild(buildSection(section));
+      controlsDiv!.appendChild(buildSection(section));
     }
   }
 
