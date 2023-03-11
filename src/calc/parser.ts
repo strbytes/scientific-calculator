@@ -13,7 +13,7 @@ const Unary = ["negate"];
 /*
  * Covert a TokenBuffer into a nested Expression structure.
  */
-export default function parser(source: TokenBuffer) {
+export default function parser(source: TokenBuffer): Expression {
   let expression = factor(source);
   while (!is_end(source.current) && Terms.includes(source.current.toString())) {
     let operator = source.pop();

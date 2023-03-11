@@ -2,15 +2,15 @@ import Calculator from "./calc/calc";
 
 interface Control {
   label: string;
-  value: string;
-  buffer: string;
-  second: string;
-  secondValue: string;
-  secondBuffer: string;
+  value?: string;
+  buffer?: string;
+  second?: string;
+  secondValue?: string;
+  secondBuffer?: string;
 }
 
 /* List of all calculator controls, organized by section. */
-const controls = {
+const controls: { [section: string]: Control[] } = {
   edit: [
     {
       label: "del",
