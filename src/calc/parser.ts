@@ -17,6 +17,8 @@ export default function parser(source: TokenBuffer) {
   let expression = factor(source);
   while (!is_end(source.current) && Terms.includes(source.current.toString())) {
     let operator = source.pop();
+    if (typeof operator === "number")
+      throw "Incorrect type entered parser. This shouldn't happen.";
     let right = factor(source);
     expression = new BinaryExpr(expression, operator, right);
   }
@@ -30,6 +32,8 @@ function factor(source: TokenBuffer) {
     Factors.includes(source.current.toString())
   ) {
     let operator = source.pop();
+    if (typeof operator === "number")
+      throw "Incorrect type entered factor. This shouldn't happen.";
     let right = exponent(source);
     expression = new BinaryExpr(expression, operator, right);
   }
@@ -44,10 +48,14 @@ function exponent(source: TokenBuffer) {
   ) {
     if (is_postfix(source.current)) {
       let operator = source.pop();
+      if (typeof operator === "number")
+        throw "Incorrect type entered exponent. This shouldn't happen.";
       expression = new CallExpr(operator, expression);
     } else {
       let operator = source.pop();
       let right = unary(source);
+      if (typeof operator === "number")
+        throw "Incorrect type entered exponent. This shouldn't happen.";
       expression = new BinaryExpr(expression, operator, right);
     }
   }
@@ -58,6 +66,8 @@ function unary(source: TokenBuffer) {
   if (!is_end(source.current) && Unary.includes(source.current.toString())) {
     let operator = source.pop();
     let operand = callExpr(source);
+    if (typeof operator === "number")
+      throw "Incorrect type entered unary. This shouldn't happen.";
     return new CallExpr(operator, operand);
   }
   return postfix(source);
