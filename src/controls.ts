@@ -1,3 +1,14 @@
+import Calculator from "./calc/calc";
+
+interface Control {
+  label: string;
+  value: string;
+  buffer: string;
+  second: string;
+  secondValue: string;
+  secondBuffer: string;
+}
+
 /* List of all calculator controls, organized by section. */
 const controls = {
   edit: [
@@ -136,7 +147,7 @@ const controls = {
   ],
 };
 
-function ControlBuilder(calc) {
+function ControlBuilder(calc: Calculator) {
   /* Builds all of the calculator buttons and sections. */
   function buildControls() {
     const controlsDiv = document.querySelector("#controls");
@@ -148,11 +159,11 @@ function ControlBuilder(calc) {
   }
 
   /* Build a section of the controls based on the section name. */
-  function buildSection(section) {
+  function buildSection(section: string) {
     const sectionDiv = document.createElement("div");
     sectionDiv.id = section;
-    for (let c of controls[section]) {
-      sectionDiv.appendChild(makeButton(c));
+    for (let control of controls[section]) {
+      sectionDiv.appendChild(makeButton(control));
     }
     return sectionDiv;
   }
@@ -160,7 +171,7 @@ function ControlBuilder(calc) {
   /**
    * Make a button out of a control object.
    */
-  function makeButton(control) {
+  function makeButton(control: Control) {
     let button = document.createElement("button");
     button.id = control.value ? control.value : control.label;
     button.textContent = control.label;
